@@ -12,9 +12,11 @@
 *.la
 *.a
 
+# Game files and executables
 dx
 cg.npa
 nss.npa
 sound.npa
 voice.npa
 steins-gate
+steins-gate.exe
