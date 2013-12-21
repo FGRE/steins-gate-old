@@ -6,6 +6,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
+*.dll
 
 # Compiled Static libraries
 *.lai
@@ -18,5 +19,6 @@ cg.npa
 nss.npa
 sound.npa
 voice.npa
+system.npa
 steins-gate
-steins-gate.exe
+*.exe
