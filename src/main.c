@@ -24,12 +24,12 @@ int __stdcall WinMain(HINSTANCE a, HINSTANCE b, char* c, int d)
     assert(pLib);
     FARPROC pMain = GetProcAddress(pLib, "NitroplusMain");
     assert(pMain);
-    return pMain();
+    return pMain("nss/sg00_01.nsb");
 }
 #else
-int NitroplusMain();
+int NitroplusMain(const char*);
 int main(int argc, char** argv)
 {
-    return NitroplusMain();
+    return NitroplusMain("nss/sg00_01.nsb");
 }
 #endif
