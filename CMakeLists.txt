@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project (libnpengine)
+project (steins-gate)
 
 set(CMAKE_BUILD_TYPE Debug)
 include_directories(${CMAKE_SOURCE_DIR}/../libnpengine/include)

@@ -15,6 +15,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
+#include <stdbool.h>
+
 #ifdef _WIN32
 #include <windows.h>
 #include <assert.h>
@@ -24,12 +26,12 @@ int __stdcall WinMain(HINSTANCE a, HINSTANCE b, char* c, int d)
     assert(pLib);
     FARPROC pMain = GetProcAddress(pLib, "NitroplusMain");
     assert(pMain);
-    return pMain("nss/sg00_01.nsb");
+    return pMain("nss/sg00_01.nsb", false);
 }
 #else
-int NitroplusMain(const char*);
+int NitroplusMain(const char*, bool);
 int main(int argc, char** argv)
 {
-    return NitroplusMain("nss/sg00_01.nsb");
+    return NitroplusMain("nss/sg00_01.nsb", false);
 }
 #endif
