@@ -1,6 +1,6 @@
 /* 
- * steins-gate: Alternative Steins;Gate Visual Novel executable
- * Copyright (C) 2013-2014 Mislav Blažević <krofnica996@gmail.com>
+ * steins-gate: Open source implementation of Steins;Gate Visual Novel
+ * Copyright (C) 2014 Mislav Blažević <krofnica996@gmail.com>
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,23 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
-#include <stdbool.h>
+#include "game.hpp"
 
-#ifdef _WIN32
-#include <windows.h>
-#include <assert.h>
-int __stdcall WinMain(HINSTANCE a, HINSTANCE b, char* c, int d)
+class SGInterpreter;
+
+class SteinsGate : public Game
 {
-    HINSTANCE pLib = LoadLibrary("libnpengine.dll");
-    assert(pLib);
-    FARPROC pMain = GetProcAddress(pLib, "NitroplusMain");
-    assert(pMain);
-    return pMain("nss/sg00_01.nsb", false);
-}
-#else
-int NitroplusMain(const char*, bool);
-int main(int argc, char** argv)
-{
-    return NitroplusMain("nss/sg00_01.nsb", false);
-}
-#endif
+public:
+    SteinsGate(SGInterpreter* pInterpreter);
+
+protected:
+    virtual void HandleEvent(sf::Event Event);
+};
