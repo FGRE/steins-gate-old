@@ -18,6 +18,7 @@
 #include "sginterpreter.hpp"
 #include "phone.hpp"
 #include "steinsgate.hpp"
+#include <thread>
 
 SGInterpreter::SGInterpreter()
 {
@@ -26,12 +27,15 @@ SGInterpreter::SGInterpreter()
 SGInterpreter::~SGInterpreter()
 {
     delete pPhone;
+    pScriptThread->join();
+    delete pScriptThread;
 }
 
-void SGInterpreter::Initialize(SteinsGate* pSteinsGate)
+void SGInterpreter::Initialize(Game* pSteinsGate)
 {
-    pGame = pSteinsGate;
+    NsbInterpreter::Initialize(pSteinsGate);
     pPhone = new Phone(new sf::Sprite(), pSteinsGate);
+    pScriptThread = new std::thread(std::bind(&SGInterpreter::Main, this));
 }
 
 void SGInterpreter::Main()

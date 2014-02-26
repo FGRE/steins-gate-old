@@ -20,6 +20,11 @@
 class Phone;
 class SteinsGate;
 
+namespace std
+{
+    class thread;
+};
+
 class SGInterpreter : public NsbInterpreter
 {
     friend class SteinsGate;
@@ -27,7 +32,7 @@ class SGInterpreter : public NsbInterpreter
 public:
     SGInterpreter();
     ~SGInterpreter();
-    void Initialize(SteinsGate* pSteinsGate);
+    void Initialize(Game* pSteinsGate);
     void Main();
 
     void MouseMoved(sf::Vector2i Pos);
@@ -43,4 +48,5 @@ private:
     void SGPhonePriority();
 
     Phone* pPhone;
+    std::thread* pScriptThread;
 };

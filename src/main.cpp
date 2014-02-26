@@ -19,24 +19,13 @@
 #include "sginterpreter.hpp"
 #include "resourcemgr.hpp"
 #include "text.hpp"
-#include <thread>
-
-extern "C"
-{
-    void gst_init(int* argc, char** argv[]);
-}
 
 int main(int argc, char** argv)
 {
-    gst_init(&argc, &argv);
-    Text::Initialize("/usr/share/fonts/cjkuni-uming/uming.ttc");
-    sResourceMgr = new ResourceMgr({"cg.npa", "nss.npa", "voice.npa", "sound.npa"});
     SGInterpreter* pInterpreter = new SGInterpreter;
     SteinsGate* pGame = new SteinsGate(pInterpreter);
     pGame->GLCallback(std::bind(&SGInterpreter::Initialize, pInterpreter, pGame));
-    std::thread ScriptThread(std::bind(&SGInterpreter::Main, pInterpreter));
     pGame->Run();
-    ScriptThread.join();
     delete pGame;
     delete sResourceMgr;
     delete pInterpreter;
