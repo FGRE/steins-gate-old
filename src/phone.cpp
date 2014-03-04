@@ -19,8 +19,8 @@
 #include "phone.hpp"
 #include "game.hpp"
 #include "phonemodedefaultoperatable.hpp"
+#include "phonesd.hpp"
 #include <SFML/Graphics/Texture.hpp>
-#include <boost/lexical_cast.hpp>
 
 enum PhoneState
 {
@@ -32,74 +32,7 @@ enum PhoneState
     PHONE_CLOSED
 };
 
-const int16_t PHONE_SD_POS_X = 20;
-const int16_t PHONE_SD_POS_Y = 20;
-const int16_t PHONE_SD_TEX_X = 794;
-const int16_t PHONE_SD_TEX_Y = 42;
-const int16_t PHONE_SD_WIDTH = 200;
-const int16_t PHONE_SD_HEIGHT = 50;
-
-const int16_t PHONE_SD_BLUE_TEX_X = 782;
-const int16_t PHONE_SD_BLUE_TEX_Y = 124;
-const int16_t PHONE_SD_BLUE_WIDTH = PHONE_SD_WIDTH + (PHONE_SD_TEX_X - PHONE_SD_BLUE_TEX_X) * 2;
-const int16_t PHONE_SD_BLUE_HEIGHT = PHONE_SD_HEIGHT + (136 - PHONE_SD_BLUE_TEX_Y) * 2;
-
-// First digit in SD
-const int16_t PHONE_SD_DIGIT_POS_X = 36;
-const int16_t PHONE_SD_DIGIT_POS_Y = 36;
-const int16_t PHONE_SD_DIGIT_OFFSET_X = 7;
-const int16_t PHONE_SD_DAY_POS_Y = 47;
-
-// 0-9
-const int16_t PHONE_DIGIT_A_TEX_X[10] =
-{
-    334, 24, 59, 93, 127, 159, 192, 226, 260, 292
-};
-const int16_t PHONE_DIGIT_A_TEX_Y = 83;
-const int16_t PHONE_DIGIT_A_WIDTH = 16;
-const int16_t PHONE_DIGIT_A_HEIGHT = 22;
-
-// SUN, MON-SAT
-const int16_t PHONE_DAY_TEX_X[7] =
-{
-    23, 75, 126, 178, 229, 281, 332
-};
-const int16_t PHONE_DAY_TEX_Y = 128;
-const int16_t PHONE_DAY_WIDTH = 39;
-const int16_t PHONE_DAY_HEIGHT = 14;
-
-// "/"
-const int16_t PHONE_SLASH_TEX_X = 400;
-const int16_t PHONE_SLASH_TEX_Y = 164;
-const int16_t PHONE_SLASH_WIDTH = 16;
-const int16_t PHONE_SLASH_HEIGHT = 24;
-
-//
-enum PhoneIcon
-{
-    PHONE_ICON_UNK = 0,
-    PHONE_ICON_MAIL = 1,
-    PHONE_ICON_SIGNAL = 2,
-    PHONE_ICON_BATTERY = 3,
-    PHONE_ICON_MAX = 4
-};
-const int16_t PHONE_ICON_TEX_X = 626;
-const int16_t PHONE_ICON_TEX_Y[PHONE_ICON_MAX] =
-{
-    30, 56, 79, 106
-};
-const int16_t PHONE_ICON_POS_X[PHONE_ICON_MAX] =
-{
-    -1, 147, 187, 166
-};
-const int16_t PHONE_ICON_POS_Y = 30;
-const int16_t PHONE_ICON_WIDTH[PHONE_ICON_MAX] =
-{
-    23, 16, 17, 19
-};
-const int16_t PHONE_ICON_HEIGHT = 11;
-
-//
+// UNUSED
 enum PhoneSDText
 {
     PHONE_SD_TEXT_NEW_MAIL = 0,
@@ -185,20 +118,6 @@ const string PhoneModeString[] =
     "PhoneMode_SendMailEdit"
 };
 
-int DateToWeekDay(string Date)
-{
-    string Month(Date, 0, 2);
-    string Day(Date, 2, 2);
-
-    std::tm time_in = { 0, 0, 0,
-                        boost::lexical_cast<int>(Day),
-                        boost::lexical_cast<int>(Month) - 1,
-                        2010 - 1900 };
-
-    std::time_t time = std::mktime(&time_in);
-    return std::localtime(&time)->tm_wday;
-}
-
 Phone::Phone(sf::Drawable* pDrawable, sf::Window* pWindow) :
 DrawableBase(pDrawable, -1, DRAWABLE_TEXTURE),
 ShowSD(false),
@@ -211,7 +130,6 @@ pWindow(pWindow)
     pWallpaper = LoadTextureFromFile("cg/sys/phone/pwcg101.png", sf::IntRect());
     pPhoneTex = LoadTextureFromFile("cg/sys/phone/phone_01.png", sf::IntRect());
     pPhoneOpenTex = LoadTextureFromFile("cg/sys/phone/phone_open_anim.png", sf::IntRect());
-    pSDTex = LoadTextureFromFile("cg/sys/phone/phone_sd.png", sf::IntRect());
     pWhite = LoadTextureFromColor("white", MASK_WIDTH, MASK_HEIGHT);
 
     Highlight.setTexture(*pHighlight);
@@ -222,9 +140,6 @@ pWindow(pWindow)
     Mask.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
     BlueHeader.setTexture(*pPhoneTex);
     BlueHeader.setPosition(BLUE_HEADER_POS_X, BLUE_HEADER_POS_Y);
-    SD.setTexture(*pSDTex);
-    SD.setPosition(PHONE_SD_POS_X, PHONE_SD_POS_Y);
-    SD.setTextureRect(sf::IntRect(PHONE_SD_TEX_X, PHONE_SD_TEX_Y, PHONE_SD_WIDTH, PHONE_SD_HEIGHT));
     Overlay.setTexture(*pPhoneTex);
     Overlay.setPosition(PHONE_OVERLAY_POS_X, PHONE_OVERLAY_POS_Y);
     Overlay.setTextureRect(sf::IntRect(PHONE_NEW_MAIL_TEX_X, PHONE_NEW_MAIL_TEX_Y, PHONE_NEW_MAIL_WIDTH, PHONE_NEW_MAIL_HEIGHT));
@@ -258,13 +173,13 @@ pWindow(pWindow)
     HeaderText.setCharacterSize(20);
 
     pMode = new PhoneModeDefaultOperatable(this);
+    pSD = new PhoneSD();
 }
 
 Phone::~Phone()
 {
     delete pHighlight;
     delete pWhite;
-    delete pSDTex;
     delete pPhoneTex;
     delete pPhoneOpenTex;
     delete pWallpaper;
@@ -315,13 +230,7 @@ void Phone::Draw(sf::RenderWindow* pWindow)
         }
     }
     if (ShowSD)
-    {
-        pWindow->draw(SD);
-        for (int i = 0; i < 6; ++i)
-            pWindow->draw(SDDate[i]);
-        for (int i = PHONE_ICON_SIGNAL; i <= PHONE_ICON_BATTERY; ++i)
-            pWindow->draw(SDIcon[i]);
-    }
+        pSD->Draw(pWindow);
 }
 
 void Phone::Update()
@@ -449,70 +358,19 @@ void Phone::MailReceive(int32_t Show)
     }
 }
 
+void Phone::SetDate(string Date)
+{
+    pSD->SetDate(Date);
+}
+
 void Phone::SDDisplay(int32_t Show)
 {
     switch (Show)
     {
-        case PHONE_CLOSING:
-            ShowSD = false;
-            break;
-        case PHONE_OPENING:
-            for (int i = PHONE_ICON_SIGNAL; i <= PHONE_ICON_BATTERY; ++i)
-            {
-                if (!SDIcon[i].getTexture())
-                {
-                    sf::IntRect ClipArea(PHONE_ICON_TEX_X, PHONE_ICON_TEX_Y[i], PHONE_ICON_WIDTH[i], PHONE_ICON_HEIGHT);
-                    SDIcon[i].setTexture(*pSDTex);
-                    SDIcon[i].setTextureRect(ClipArea);
-                    SDIcon[i].setPosition(PHONE_ICON_POS_X[i], PHONE_ICON_POS_Y);
-                }
-            }
-            ShowSD = true;
-            break;
-        default:
-            std::cout << "Invalid value " << Show << " passed to SDDisplay." << std::endl;
-            break;
+        case PHONE_CLOSING: ShowSD = false; break;
+        case PHONE_OPENING: ShowSD = true; break;
+        default: assert(false);
     }
-}
-
-void Phone::SetDate(string Date)
-{
-    int32_t PosX = PHONE_SD_DIGIT_POS_X;
-    int i;
-
-    // Month
-    i = (Date[0] == '0' ? 1 : 0); // Alignment : skip preceeding zero
-    for (; i < 2; ++i)
-    {
-        sf::IntRect ClipArea(PHONE_DIGIT_A_TEX_X[Date[i] - '0'], PHONE_DIGIT_A_TEX_Y, PHONE_DIGIT_A_WIDTH, PHONE_DIGIT_A_HEIGHT);
-        SDDate[i].setTexture(*pSDTex);
-        SDDate[i].setTextureRect(ClipArea);
-        SDDate[i].setPosition(PosX, PHONE_SD_DIGIT_POS_Y);
-        PosX += PHONE_SD_DIGIT_OFFSET_X + PHONE_DIGIT_A_WIDTH;
-    }
-
-    // Slash
-    SDDate[2].setTexture(*pSDTex);
-    SDDate[2].setTextureRect(sf::IntRect(PHONE_SLASH_TEX_X, PHONE_SLASH_TEX_Y, PHONE_SLASH_WIDTH, PHONE_SLASH_HEIGHT));
-    SDDate[2].setPosition(PosX, PHONE_SD_DIGIT_POS_Y);
-    PosX += PHONE_SD_DIGIT_OFFSET_X + PHONE_DIGIT_A_WIDTH;
-
-    // Day
-    i = (Date[2] == '0' ? 3 : 2);
-    for (; i < 4; ++i)
-    {
-        sf::IntRect ClipArea(PHONE_DIGIT_A_TEX_X[Date[i] - '0'], PHONE_DIGIT_A_TEX_Y, PHONE_DIGIT_A_WIDTH, PHONE_DIGIT_A_HEIGHT);
-        SDDate[i + 1].setTexture(*pSDTex);
-        SDDate[i + 1].setTextureRect(ClipArea);
-        SDDate[i + 1].setPosition(PosX, PHONE_SD_DIGIT_POS_Y);
-        PosX += PHONE_SD_DIGIT_OFFSET_X + PHONE_DIGIT_A_WIDTH;
-    }
-
-    // Week day
-    sf::IntRect ClipArea(PHONE_DAY_TEX_X[DateToWeekDay(Date)], PHONE_DAY_TEX_Y, PHONE_DAY_WIDTH, PHONE_DAY_HEIGHT);
-    SDDate[5].setTexture(*pSDTex);
-    SDDate[5].setTextureRect(ClipArea);
-    SDDate[5].setPosition(PosX, PHONE_SD_DAY_POS_Y);
 }
 
 void Phone::SetPriority(int32_t Priority)

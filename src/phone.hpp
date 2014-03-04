@@ -79,6 +79,7 @@ extern const string PhoneModeString[];
 class PhoneModeDefaultOperatable;
 class SGInterpreter;
 class PhoneMode;
+class PhoneSD;
 
 class Phone : public DrawableBase
 {
@@ -114,16 +115,12 @@ private:
     sf::Texture* pWallpaper;
     sf::Texture* pPhoneOpenTex; // Open/Close animation frames
     sf::Texture* pPhoneTex;
-    sf::Texture* pSDTex;
     sf::Texture* pHighlight;
     sf::Sprite Mask;
     sf::Sprite Wallpaper;
     sf::Sprite Header;
     sf::Sprite Overlay;
     sf::Sprite OverlayRed;
-    sf::Sprite SD;
-    sf::Sprite SDDate[6];
-    sf::Sprite SDIcon[4];
     sf::Sprite BlueHeader;
     sf::Sprite Highlight;
     sf::Text HeaderText;
@@ -131,4 +128,5 @@ private:
     sf::Text MailMenuText[2];
     sf::Window* pWindow; // Needed to move mouse pointer
     PhoneMode* pMode;
+    PhoneSD* pSD;
 };

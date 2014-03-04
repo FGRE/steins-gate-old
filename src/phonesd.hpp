@@ -15,29 +15,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
-#ifndef PHONE_MODE_HPP
-#define PHONE_MODE_HPP
+#ifndef PHONE_SD_HPP
+#define PHONE_SD_HPP
 
-#include <SFML/System/Vector2.hpp>
-#include <cstdint>
+#include <SFML/Graphics/Sprite.hpp>
+#include <string>
+using std::string;
 
-namespace sf { class RenderWindow; }
+namespace sf { class RenderWindow; class Texture; }
 class Phone;
 
-class PhoneMode
+class PhoneSD
 {
     friend class Phone;
-protected:
-    PhoneMode(Phone* pPhone) : pPhone(pPhone) { }
+private:
+    PhoneSD();
+    ~PhoneSD();
 
-    virtual void OnOpen(uint8_t OldMode) = 0;
-    virtual void OnClose() = 0;
-    virtual void Draw(sf::RenderWindow* pWindow) = 0;
-    virtual void MouseMoved(sf::Vector2i Pos) = 0;
-    virtual uint8_t LeftMouseClicked() = 0;
-    virtual uint8_t RightMouseClicked() = 0;
+    void Draw(sf::RenderWindow* pWindow);
+    void SetDate(string Date);
 
-    Phone* pPhone;
+    int DateToWeekDay(string Date);
+
+    sf::Sprite SD;
+    sf::Sprite SDDate[6];
+    sf::Sprite SDIcon[4];
+    sf::Texture* pSDTex;
 };
 
 #endif
