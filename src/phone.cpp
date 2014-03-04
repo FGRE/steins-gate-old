@@ -18,7 +18,7 @@
 #include "sginterpreter.hpp"
 #include "phone.hpp"
 #include "game.hpp"
-
+#include "phonemodedefaultoperatable.hpp"
 #include <SFML/Graphics/Texture.hpp>
 #include <boost/lexical_cast.hpp>
 
@@ -31,34 +31,6 @@ enum PhoneState
     PHONE_OPEN,
     PHONE_CLOSED
 };
-
-const int16_t PHONE_ANIM_SPEED = 40; // TODO: guess
-const int8_t PHONE_ANIM_ROW_MAX = 1;
-const int8_t PHONE_ANIM_COLUMN_MAX = 4;
-const int8_t PHONE_ANIM_UNDERFLOW = -1;
-const int16_t PHONE_WIDTH = 313;
-const int16_t PHONE_HEIGHT = 576;
-const int16_t PHONE_POS_X = 678;
-const int16_t PHONE_POS_Y = 8;
-
-// cg/sys/phone/phone_01.png
-const int16_t PHONE_TEX_X = 95; // TODO: guess
-const int16_t PHONE_TEX_Y = 0; // TODO: guess
-const int16_t PHONE_HEADER_TEX_X = 670;
-const int16_t PHONE_HEADER_TEX_Y = 384;
-const int16_t PHONE_HEADER_WIDTH = 220;
-const int16_t PHONE_HEADER_HEIGHT = 24;
-const int16_t PHONE_NEW_MAIL_TEX_X = 302;
-const int16_t PHONE_NEW_MAIL_TEX_Y = 576;
-const int16_t PHONE_NEW_MAIL_WIDTH = 220;
-const int16_t PHONE_NEW_MAIL_HEIGHT = 130;
-
-const int16_t PHONE_HEADER_POS_X = PHONE_POS_X + 49; // 727
-const int16_t PHONE_HEADER_POS_Y = PHONE_POS_Y + 89; // 97
-const int16_t PHONE_WALLPAPER_X = PHONE_HEADER_POS_X;
-const int16_t PHONE_WALLPAPER_Y = PHONE_HEADER_POS_Y + PHONE_HEADER_HEIGHT; // TODO: guess
-const int16_t PHONE_OVERLAY_POS_X = PHONE_WALLPAPER_X;
-const int16_t PHONE_OVERLAY_POS_Y = 180;
 
 const int16_t PHONE_SD_POS_X = 20;
 const int16_t PHONE_SD_POS_Y = 20;
@@ -139,46 +111,6 @@ const int16_t PHONE_SD_TEXT_TEX_X[PHONE_SD_TEXT_MAX] =
 {
     135, 168, 200
 };
-
-enum PhoneButton
-{
-    BUTTON_MAIL = 0,
-    BUTTON_CONTACTS,
-    BUTTON_WEB,
-    BUTTON_SETTINGS,
-    BUTTON_MAX
-};
-const int16_t PHONE_BUTTON_TEX_X = 27;
-const int16_t PHONE_BUTTON_TEX_Y[BUTTON_MAX * 2] =
-{
-    151, 222,
-    20, 82,
-    291, 363,
-    436, 505
-};
-const int16_t PHONE_BUTTON_POS_X[] =
-{
-    766,
-    848
-};
-const int16_t PHONE_BUTTON_POS_Y[] =
-{
-    154,
-    223
-};
-const int16_t PHONE_BUTTON_WIDTH = 50;
-const int16_t PHONE_BUTTON_HEIGHT = 50;
-
-// Menu wallpaper
-const int16_t PHONE_MENU_TEX_X = 532;
-const int16_t PHONE_MENU_TEX_Y = 760;
-const int16_t PHONE_MENU_WIDTH = 220;
-const int16_t PHONE_MENU_HEIGHT = 254;
-
-const int16_t PHONE_MENU_MAIN_TEX_X = 670;
-const int16_t PHONE_MENU_MAIN_TEX_Y = 213;
-const int16_t PHONE_MENU_MAIN_WIDTH = 220;
-const int16_t PHONE_MENU_MAIN_HEIGHT = 38;
 
 const char* ContactString[] =
 {
@@ -272,8 +204,6 @@ DrawableBase(pDrawable, -1, DRAWABLE_TEXTURE),
 ShowSD(false),
 ShowOverlay(false),
 Mode(MODE_POWER_OFF),
-ButtonHighlightX(-1),
-ButtonHighlightY(-1),
 MailMenuHighlight(0),
 pWindow(pWindow)
 {
@@ -288,8 +218,6 @@ pWindow(pWindow)
     OverlayRed.setTexture(*pPhoneTex);
     OverlayRed.setPosition(OVERLAY_RED_POS_X, OVERLAY_RED_POS_Y);
     OverlayRed.setTextureRect(sf::IntRect(OVERLAY_RED_TEX_X, OVERLAY_RED_TEX_Y, OVERLAY_RED_WIDTH, OVERLAY_RED_HEIGHT));
-    MenuOverlay.setTexture(*pPhoneTex);
-    MenuOverlay.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
     Mask.setTexture(*pPhoneTex);
     Mask.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
     BlueHeader.setTexture(*pPhoneTex);
@@ -306,17 +234,6 @@ pWindow(pWindow)
 
     Wallpaper.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
     ToSprite()->setPosition(PHONE_POS_X, PHONE_POS_Y);
-
-    for (int y = 0; y < 2; ++y)
-    {
-        for (int x = 0; x < 2; ++x)
-        {
-            sf::IntRect ClipArea(PHONE_BUTTON_TEX_X, PHONE_BUTTON_TEX_Y[(y * 2 + x) * 2 + 1], PHONE_BUTTON_WIDTH, PHONE_BUTTON_HEIGHT);
-            Button[y][x].setTexture(*pPhoneTex);
-            Button[y][x].setTextureRect(ClipArea);
-            Button[y][x].setPosition(PHONE_BUTTON_POS_X[x], PHONE_BUTTON_POS_Y[y]);
-        }
-    }
 
     for (int i = 0; i < 5; ++i)
     {
@@ -339,6 +256,8 @@ pWindow(pWindow)
     HeaderText.setFont(Text::Font);
     HeaderText.setPosition(BLUE_HEADER_POS_X + 24, BLUE_HEADER_POS_Y);
     HeaderText.setCharacterSize(20);
+
+    pMode = new PhoneModeDefaultOperatable(this);
 }
 
 Phone::~Phone()
@@ -378,12 +297,7 @@ void Phone::Draw(sf::RenderWindow* pWindow)
                 pWindow->draw(Overlay);
         }
         if (Mode == MODE_DEFAULT_OPERATABLE)
-        {
-            pWindow->draw(MenuOverlay);
-            for (int y = 0; y < 2; ++y)
-                for (int x = 0; x < 2; ++x)
-                    pWindow->draw(Button[y][x]);
-        }
+            pMode->Draw(pWindow);
         if (Mode == MODE_ADDRESS_BOOK)
         {
             pWindow->draw(Mask);
@@ -485,39 +399,21 @@ void Phone::UpdateAnim()
 
 void Phone::UpdateMode(uint8_t NewMode)
 {
-    if (NewMode == Mode)
+    if (NewMode == Mode || NewMode == MODE_INVALID)
         return;
+
+    if (Mode == MODE_DEFAULT_OPERATABLE)
+        pMode->OnClose();
 
     switch (NewMode)
     {
+        case MODE_DEFAULT_OPERATABLE:
+            pMode->OnOpen(Mode);
+            break;
         case MODE_DEFAULT:
             Wallpaper.setTexture(*pWallpaper);
             Wallpaper.setTextureRect(sf::IntRect(0, 0, WALLPAPER_WIDTH, WALLPAPER_HEIGHT));
             break;
-        case MODE_DEFAULT_OPERATABLE:
-        {
-            sf::IntRect WallpaperClipArea(PHONE_MENU_TEX_X, PHONE_MENU_TEX_Y, PHONE_MENU_WIDTH, PHONE_MENU_HEIGHT);
-            Wallpaper.setTexture(*pPhoneTex);
-            Wallpaper.setTextureRect(WallpaperClipArea);
-            sf::IntRect OverlayClipArea(PHONE_MENU_MAIN_TEX_X, PHONE_MENU_MAIN_TEX_Y, PHONE_MENU_MAIN_WIDTH, PHONE_MENU_MAIN_HEIGHT);
-            MenuOverlay.setTextureRect(OverlayClipArea);
-
-            // Check old mode
-            switch (Mode)
-            {
-                case MODE_ADDRESS_BOOK:
-                    sf::Mouse::setPosition(sf::Vector2i(PHONE_BUTTON_POS_X[1] + PHONE_BUTTON_WIDTH / 2,
-                                                        PHONE_BUTTON_POS_Y[0] + PHONE_BUTTON_HEIGHT / 2),
-                                           *pWindow);
-                    break;
-                case MODE_MAIL_MENU:
-                    sf::Mouse::setPosition(sf::Vector2i(PHONE_BUTTON_POS_X[0] + PHONE_BUTTON_WIDTH / 2,
-                                                        PHONE_BUTTON_POS_Y[0] + PHONE_BUTTON_HEIGHT / 2),
-                                           *pWindow);
-                    break;
-            }
-            break;
-        }
         case MODE_ADDRESS_BOOK:
         {
             sf::Mouse::setPosition(sf::Vector2i(BLUE_HEADER_POS_X + BLUE_HEADER_WIDTH / 2, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + 10), *pWindow);
@@ -629,11 +525,7 @@ void Phone::MouseMoved(sf::Vector2i Pos)
     switch (Mode)
     {
         case MODE_DEFAULT_OPERATABLE:
-            for (int y = 0; y < 2; ++y)
-                for (int x = 0; x < 2; ++x)
-                    if (Pos.x > PHONE_BUTTON_POS_X[x] && Pos.x < PHONE_BUTTON_POS_X[x] + PHONE_BUTTON_WIDTH)
-                        if (Pos.y > PHONE_BUTTON_POS_Y[y] && Pos.y < PHONE_BUTTON_POS_Y[y] + PHONE_BUTTON_HEIGHT)
-                            HighlightButton(x, y);
+            pMode->MouseMoved(Pos);
             break;
         case MODE_ADDRESS_BOOK:
             if (Pos.x > BLUE_HEADER_POS_X && Pos.x < BLUE_HEADER_POS_X + MASK_WIDTH && Pos.y > BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT)
@@ -664,60 +556,23 @@ void Phone::LeftMouseClicked(sf::Vector2i Pos)
           Pos.y > PHONE_WALLPAPER_Y && Pos.y < PHONE_WALLPAPER_Y + WALLPAPER_HEIGHT))
         return;
 
-    if (ButtonHighlightX != -1 && Mode == MODE_DEFAULT_OPERATABLE)
-    {
-        switch (ButtonHighlightY * 2 + ButtonHighlightX)
-        {
-            case BUTTON_CONTACTS:
-                UpdateMode(MODE_ADDRESS_BOOK);
-                break;
-            case BUTTON_MAIL:
-                UpdateMode(MODE_MAIL_MENU);
-                break;
-            case BUTTON_WEB:
-                if (fork() == 0)
-                    execlp("/usr/bin/xdg-open", "/usr/bin/xdg-open", "http://futuregadget-lab.com/", NULL);
-                break;
-            case BUTTON_SETTINGS:
-                break;
-        }
-    }
+    if (Mode == MODE_DEFAULT_OPERATABLE)
+        UpdateMode(pMode->LeftMouseClicked());
 }
 
 void Phone::RightMouseClicked(SGInterpreter* pInterpreter)
 {
     switch (Mode)
     {
+        case MODE_DEFAULT_OPERATABLE:
+            UpdateMode(pMode->RightMouseClicked());
+            break;
         case MODE_MAIL_MENU:
         case MODE_ADDRESS_BOOK:
             UpdateMode(MODE_DEFAULT_OPERATABLE);
-            break;
-        case MODE_DEFAULT_OPERATABLE:
-            UpdateMode(MODE_DEFAULT);
             break;
         case MODE_DEFAULT:
             pInterpreter->PhoneToggle();
             break;
     }
-}
-
-void Phone::HighlightButton(int x, int y)
-{
-    if (x == ButtonHighlightX && y == ButtonHighlightY)
-        return;
-
-    // Remove old highlight
-    sf::IntRect OldClipArea(PHONE_BUTTON_TEX_X, PHONE_BUTTON_TEX_Y[(ButtonHighlightY * 2 + ButtonHighlightX) * 2 + 1], PHONE_BUTTON_WIDTH, PHONE_BUTTON_HEIGHT);
-    Button[ButtonHighlightY][ButtonHighlightX].setTextureRect(OldClipArea);
-
-    // Add new highlight
-    ButtonHighlightX = x;
-    ButtonHighlightY = y;
-    sf::IntRect ClipArea(PHONE_BUTTON_TEX_X, PHONE_BUTTON_TEX_Y[(y * 2 + x) * 2], PHONE_BUTTON_WIDTH, PHONE_BUTTON_HEIGHT);
-    Button[y][x].setTextureRect(ClipArea);
-
-    // Move mouse to center of button
-    sf::Mouse::setPosition(sf::Vector2i(PHONE_BUTTON_POS_X[x] + PHONE_BUTTON_WIDTH / 2,
-                                        PHONE_BUTTON_POS_Y[y] + PHONE_BUTTON_HEIGHT / 2),
-                           *pWindow);
 }

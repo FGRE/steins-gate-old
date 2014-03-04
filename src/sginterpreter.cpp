@@ -99,6 +99,7 @@ void SGInterpreter::SGPhoneOpen()
     pPhone->UpdateOpenMode(GetVariable<int32_t>("$SF_Phone_Open"));
     pGame->RemoveDrawable(pPhone);
     pGame->AddDrawable(pPhone);
+    pPhone->UpdateMode(MODE_DEFAULT_OPERATABLE);
 }
 
 void SGInterpreter::SGPhonePriority()

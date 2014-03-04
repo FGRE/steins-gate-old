@@ -17,8 +17,10 @@
  * */
 #include "text.hpp"
 #include <SFML/Graphics/Sprite.hpp>
+#include <string>
+using std::string;
 
-enum PhoneMode
+enum
 {
     MODE_ADDRESS_BOOK = 0,
     MODE_ADDRESS_CONFIRM_DIAL,
@@ -44,10 +46,43 @@ enum PhoneMode
     MODE_INVALID = 0xFF // Custom
 };
 
+const int16_t PHONE_ANIM_SPEED = 40; // TODO: guess
+const int8_t PHONE_ANIM_ROW_MAX = 1;
+const int8_t PHONE_ANIM_COLUMN_MAX = 4;
+const int8_t PHONE_ANIM_UNDERFLOW = -1;
+const int16_t PHONE_WIDTH = 313;
+const int16_t PHONE_HEIGHT = 576;
+const int16_t PHONE_POS_X = 678;
+const int16_t PHONE_POS_Y = 8;
+
+// cg/sys/phone/phone_01.png
+const int16_t PHONE_TEX_X = 95; // TODO: guess
+const int16_t PHONE_TEX_Y = 0; // TODO: guess
+const int16_t PHONE_HEADER_TEX_X = 670;
+const int16_t PHONE_HEADER_TEX_Y = 384;
+const int16_t PHONE_HEADER_WIDTH = 220;
+const int16_t PHONE_HEADER_HEIGHT = 24;
+const int16_t PHONE_NEW_MAIL_TEX_X = 302;
+const int16_t PHONE_NEW_MAIL_TEX_Y = 576;
+const int16_t PHONE_NEW_MAIL_WIDTH = 220;
+const int16_t PHONE_NEW_MAIL_HEIGHT = 130;
+
+const int16_t PHONE_HEADER_POS_X = PHONE_POS_X + 49; // 727
+const int16_t PHONE_HEADER_POS_Y = PHONE_POS_Y + 89; // 97
+const int16_t PHONE_WALLPAPER_X = PHONE_HEADER_POS_X;
+const int16_t PHONE_WALLPAPER_Y = PHONE_HEADER_POS_Y + PHONE_HEADER_HEIGHT; // TODO: guess
+const int16_t PHONE_OVERLAY_POS_X = PHONE_WALLPAPER_X;
+const int16_t PHONE_OVERLAY_POS_Y = 180;
+
 extern const string PhoneModeString[];
+
+class PhoneModeDefaultOperatable;
+class SGInterpreter;
+class PhoneMode;
 
 class Phone : public DrawableBase
 {
+    friend class PhoneModeDefaultOperatable;
 public:
     Phone(sf::Drawable* pDrawable, sf::Window* pWindow);
     virtual ~Phone();
@@ -66,7 +101,6 @@ public:
 
 private:
     void UpdateAnim();
-    void HighlightButton(int x, int y);
 
     bool ShowSD;
     bool ShowOverlay;
@@ -74,7 +108,6 @@ private:
     uint8_t State;
     int8_t AnimRow;
     int8_t AnimColumn;
-    int8_t ButtonHighlightX, ButtonHighlightY; // Currently highlighed button
     int8_t MailMenuHighlight; // Currently highlighted text
     sf::Clock AnimClock;
     sf::Texture* pWhite;
@@ -91,12 +124,11 @@ private:
     sf::Sprite SD;
     sf::Sprite SDDate[6];
     sf::Sprite SDIcon[4];
-    sf::Sprite Button[2][2];
     sf::Sprite BlueHeader;
-    sf::Sprite MenuOverlay;
     sf::Sprite Highlight;
     sf::Text HeaderText;
     sf::Text Contacts[5];
     sf::Text MailMenuText[2];
     sf::Window* pWindow; // Needed to move mouse pointer
+    PhoneMode* pMode;
 };
