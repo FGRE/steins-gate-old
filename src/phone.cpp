@@ -520,6 +520,7 @@ void Phone::UpdateMode(uint8_t NewMode)
         }
         case MODE_ADDRESS_BOOK:
         {
+            sf::Mouse::setPosition(sf::Vector2i(BLUE_HEADER_POS_X + BLUE_HEADER_WIDTH / 2, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + 10), *pWindow);
             sf::IntRect BlueHeaderClipArea(BLUE_HEADER_TEX_X, BLUE_HEADER_TEX_Y[BLUE_HEADER_CONACTS], BLUE_HEADER_WIDTH, BLUE_HEADER_HEIGHT);
             BlueHeader.setTextureRect(BlueHeaderClipArea);
             Wallpaper.setTexture(*pWhite, true);
