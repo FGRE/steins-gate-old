@@ -167,6 +167,7 @@ pWindow(pWindow)
         MailMenuText[i].setCharacterSize(20);
         MailMenuText[i].setColor(sf::Color::Black);
     }
+    MailMenuText[MailMenuHighlight].setColor(sf::Color::Red);
 
     HeaderText.setFont(Text::Font);
     HeaderText.setPosition(BLUE_HEADER_POS_X + 24, BLUE_HEADER_POS_Y);
@@ -335,6 +336,14 @@ void Phone::UpdateMode(uint8_t NewMode)
             break;
         }
         case MODE_MAIL_MENU:
+            if (MailMenuHighlight != 0)
+            {
+                MailMenuText[MailMenuHighlight].setColor(sf::Color::Black);
+                MailMenuText[0].setColor(sf::Color::Red);
+                MailMenuHighlight = 0;
+            }
+            Mode = NewMode; // Needed for MouseMoved to work
+            MouseMoved(sf::Mouse::getPosition(*pWindow));
             break;
         case MODE_POWER_OFF:
             break;

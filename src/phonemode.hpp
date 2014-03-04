@@ -31,7 +31,7 @@ protected:
     PhoneMode(Phone* pPhone) : pPhone(pPhone) { }
 
     virtual void OnOpen(uint8_t OldMode) = 0;
-    virtual void OnClose() = 0;
+    virtual void OnClose() = 0; // UNUSED
     virtual void Draw(sf::RenderWindow* pWindow) = 0;
     virtual void MouseMoved(sf::Vector2i Pos) = 0;
     virtual uint8_t LeftMouseClicked() = 0;
