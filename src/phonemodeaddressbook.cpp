@@ -37,7 +37,9 @@ const char* ContactString[] =
 };
 
 PhoneModeAddressBook::PhoneModeAddressBook(Phone* pPhone) :
-PhoneMode(pPhone)
+PhoneMode(pPhone),
+ContactHighlight(0),
+CallAllowedMask(0)
 {
     pWhite = LoadTextureFromColor("white", MASK_WIDTH, MASK_HEIGHT);
     pHighlight = LoadTextureFromColor("#ffc896", 220, 20);
@@ -96,12 +98,17 @@ void PhoneModeAddressBook::MouseMoved(sf::Vector2i Pos)
     {
         int i = (Pos.y - (BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT)) / 20;
         if (i >= 0 && i < 5)
+        {
             Highlight.setPosition(BLUE_HEADER_POS_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + i * 20);
+            ContactHighlight = i;
+        }
     }
 }
 
 uint8_t PhoneModeAddressBook::LeftMouseClicked()
 {
+    if (CallAllowedMask & (1 << ContactHighlight))
+        return MODE_ADDRESS_CONFIRM_DIAL;
     return MODE_INVALID;
 }
 

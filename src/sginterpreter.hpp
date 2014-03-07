@@ -42,6 +42,8 @@ protected:
     void Set();
 
 private:
+    void AllowPhoneCall();
+
     void PhoneToggle();
     void SGPhoneOpen();
     void SGPhoneMode();

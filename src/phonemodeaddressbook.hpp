@@ -39,6 +39,8 @@ protected:
     virtual uint8_t RightMouseClicked();
 
 private:
+    int8_t ContactHighlight;
+    uint8_t CallAllowedMask;
     sf::Texture* pWhite;
     sf::Texture* pHighlight;
     sf::Sprite Highlight;

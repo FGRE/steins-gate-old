@@ -18,10 +18,51 @@
 #include "sginterpreter.hpp"
 #include "phone.hpp"
 #include "steinsgate.hpp"
+#include "nsbmagic.hpp"
 #include <thread>
+
+static const string PhoneModeString[] =
+{
+    "PhoneMode_AddressBook",
+    "PhoneMode_AddressConfirmDial",
+    "PhoneMode_AddressConfirmMail",
+    "PhoneMode_Calling",
+    "PhoneMode_CompleteReceiveMail",
+    "PhoneMode_CompleteSendMail",
+    "PhoneMode_Default",
+    "PhoneMode_DefaultOperatable",
+    "PhoneMode_DialogSendMailEdit",
+    "PhoneMode_EngageNormal",
+    "PhoneMode_EngageVisual",
+    "PhoneMode_MailMenu",
+    "PhoneMode_MailSubMenu",
+    "PhoneMode_PowerOff",
+    "PhoneMode_ReceiveBox",
+    "PhoneMode_ReceivedMail",
+    "PhoneMode_ReceivingMail",
+    "PhoneMode_SendBox",
+    "PhoneMode_Sending",
+    "PhoneMode_SendMailEdit"
+};
+
+static const string PhoneContactString[] =
+{
+    "PhID_DAR",
+    "PhID_Oven",
+    "PhID_FEI",
+    "PhID_MAY",
+    "PhID_RUK"
+/*
+macrosys2.nsb:    UNK143("PhID_John");
+macrosys2.nsb:    UNK143("PhID_CRS");
+macrosys2.nsb:    UNK143("PhID_SUZ");
+macrosys2.nsb:    UNK143("PhID_SUZ_0");
+*/
+};
 
 SGInterpreter::SGInterpreter()
 {
+    Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
 }
 
 SGInterpreter::~SGInterpreter()
@@ -122,8 +163,18 @@ void SGInterpreter::SGPhoneMode()
         }
     }
 
-    if (Mode == MODE_INVALID)
-        return;
-
     pPhone->UpdateMode(Mode);
+}
+
+void SGInterpreter::AllowPhoneCall()
+{
+    uint8_t Mask = 0;
+    for (uint8_t i = 0; i < 4; ++i)
+    {
+        string PhID = GetParam<string>(i);
+        for (uint8_t j = 0; j < 5; ++j)
+            if (PhID == PhoneContactString[j])
+                Mask |= (1 << j);
+    }
+    pPhone->SetPhoneCallAllowMask(Mask);
 }

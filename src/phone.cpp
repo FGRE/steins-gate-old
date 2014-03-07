@@ -65,30 +65,6 @@ const int16_t OVERLAY_RED_POS_Y = 159;
 
 const int16_t MAIL_MENU_TEXT_POS_X = 750;
 
-const string PhoneModeString[] =
-{
-    "PhoneMode_AddressBook",
-    "PhoneMode_AddressConfirmDial",
-    "PhoneMode_AddressConfirmMail",
-    "PhoneMode_Calling",
-    "PhoneMode_CompleteReceiveMail",
-    "PhoneMode_CompleteSendMail",
-    "PhoneMode_Default",
-    "PhoneMode_DefaultOperatable",
-    "PhoneMode_DialogSendMailEdit",
-    "PhoneMode_EngageNormal",
-    "PhoneMode_EngageVisual",
-    "PhoneMode_MailMenu",
-    "PhoneMode_MailSubMenu",
-    "PhoneMode_PowerOff",
-    "PhoneMode_ReceiveBox",
-    "PhoneMode_ReceivedMail",
-    "PhoneMode_ReceivingMail",
-    "PhoneMode_SendBox",
-    "PhoneMode_Sending",
-    "PhoneMode_SendMailEdit"
-};
-
 Phone::Phone(sf::Drawable* pDrawable, sf::Window* pWindow) :
 DrawableBase(pDrawable, -1, DRAWABLE_TEXTURE),
 ShowSD(false),
@@ -372,4 +348,10 @@ void Phone::RightMouseClicked(SGInterpreter* pInterpreter)
             pInterpreter->PhoneToggle();
             break;
     }
+}
+
+void Phone::SetPhoneCallAllowMask(uint8_t Mask)
+{
+    PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
+    pMode->CallAllowedMask = Mask;
 }

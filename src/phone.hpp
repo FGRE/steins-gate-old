@@ -90,7 +90,6 @@ const int16_t BLUE_HEADER_POS_Y = PHONE_HEADER_POS_Y + PHONE_HEADER_HEIGHT;
 const int16_t BLUE_HEADER_WIDTH = 220;
 const int16_t BLUE_HEADER_HEIGHT = 23;
 
-extern const string PhoneModeString[];
 extern const char* HeaderString[];
 
 class PhoneModeDefaultOperatable;
@@ -117,6 +116,7 @@ public:
     void MouseMoved(sf::Vector2i Pos);
     void LeftMouseClicked(sf::Vector2i Pos);
     void RightMouseClicked(SGInterpreter* pInterpreter);
+    void SetPhoneCallAllowMask(uint8_t Mask);
 
 private:
     void UpdateAnim();
