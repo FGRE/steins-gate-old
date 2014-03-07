@@ -29,6 +29,7 @@ class PhoneMode
     friend class Phone;
 protected:
     PhoneMode(Phone* pPhone) : pPhone(pPhone) { }
+    ~PhoneMode() { }
 
     virtual void OnOpen(uint8_t OldMode) = 0;
     virtual void OnClose() = 0; // UNUSED
@@ -37,7 +38,7 @@ protected:
     virtual uint8_t LeftMouseClicked() = 0;
     virtual uint8_t RightMouseClicked() = 0;
 
-    Phone* pPhone;
+    Phone* pPhone; // TODO: static?
 };
 
 #endif

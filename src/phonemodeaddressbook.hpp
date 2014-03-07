@@ -15,19 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
-#ifndef PHONE_MODE_DEFAULT_OPERATABLE_HPP
-#define PHONE_MODE_DEFAULT_OPERATABLE_HPP
+#ifndef PHONE_MODE_ADDRESS_BOOK_HPP
+#define PHONE_MODE_ADDRESS_BOOK_HPP
 
 #include "phonemode.hpp"
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 class Phone;
 
-class PhoneModeDefaultOperatable : PhoneMode
+class PhoneModeAddressBook : PhoneMode
 {
     friend class Phone;
 protected:
-    PhoneModeDefaultOperatable(Phone* pPhone);
+    PhoneModeAddressBook(Phone* pPhone);
+    ~PhoneModeAddressBook();
 
     virtual void OnOpen(uint8_t OldMode);
     virtual void OnClose();
@@ -37,11 +39,12 @@ protected:
     virtual uint8_t RightMouseClicked();
 
 private:
-    void HighlightButton(int8_t x, int8_t y);
-
-    int8_t ButtonHighlightX, ButtonHighlightY; // Currently highlighed button
-    sf::Sprite Button[2][2];
-    sf::Sprite MenuOverlay;
+    sf::Texture* pWhite;
+    sf::Texture* pHighlight;
+    sf::Sprite Highlight;
+    sf::Sprite Mask;
+    sf::Text HeaderText;
+    sf::Text Contacts[5];
 };
 
 #endif

@@ -43,7 +43,7 @@ enum
     MODE_SENDING,
     MODE_SEND_MAIL_EDIT,
 
-    MODE_INVALID = 0xFF // Custom
+    MODE_INVALID // Custom
 };
 
 const int16_t PHONE_ANIM_SPEED = 40; // TODO: guess
@@ -74,7 +74,24 @@ const int16_t PHONE_WALLPAPER_Y = PHONE_HEADER_POS_Y + PHONE_HEADER_HEIGHT; // T
 const int16_t PHONE_OVERLAY_POS_X = PHONE_WALLPAPER_X;
 const int16_t PHONE_OVERLAY_POS_Y = 180;
 
+enum
+{
+    BLUE_HEADER_MAIL,
+    BLUE_HEADER_CONTACTS,
+    BLUE_HEADER_SETTINGS
+};
+const int16_t BLUE_HEADER_TEX_X = 670;
+const int16_t BLUE_HEADER_TEX_Y[] =
+{
+    284, 318, 349
+};
+const int16_t BLUE_HEADER_POS_X = PHONE_HEADER_POS_X;
+const int16_t BLUE_HEADER_POS_Y = PHONE_HEADER_POS_Y + PHONE_HEADER_HEIGHT;
+const int16_t BLUE_HEADER_WIDTH = 220;
+const int16_t BLUE_HEADER_HEIGHT = 23;
+
 extern const string PhoneModeString[];
+extern const char* HeaderString[];
 
 class PhoneModeDefaultOperatable;
 class SGInterpreter;
@@ -84,6 +101,7 @@ class PhoneSD;
 class Phone : public DrawableBase
 {
     friend class PhoneModeDefaultOperatable;
+    friend class PhoneModeAddressBook;
 public:
     Phone(sf::Drawable* pDrawable, sf::Window* pWindow);
     virtual ~Phone();
@@ -111,22 +129,17 @@ private:
     int8_t AnimColumn;
     int8_t MailMenuHighlight; // Currently highlighted text
     sf::Clock AnimClock;
-    sf::Texture* pWhite;
     sf::Texture* pWallpaper;
     sf::Texture* pPhoneOpenTex; // Open/Close animation frames
     sf::Texture* pPhoneTex;
-    sf::Texture* pHighlight;
-    sf::Sprite Mask;
     sf::Sprite Wallpaper;
     sf::Sprite Header;
     sf::Sprite Overlay;
     sf::Sprite OverlayRed;
     sf::Sprite BlueHeader;
-    sf::Sprite Highlight;
-    sf::Text HeaderText;
-    sf::Text Contacts[5];
     sf::Text MailMenuText[2];
     sf::Window* pWindow; // Needed to move mouse pointer
     PhoneMode* pMode;
+    PhoneMode* PhoneModes[MODE_INVALID];
     PhoneSD* pSD;
 };

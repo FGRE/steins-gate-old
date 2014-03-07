@@ -9,7 +9,7 @@ find_package(GStreamer REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/../libnpengine/include)
 include_directories(${CMAKE_SOURCE_DIR}/../libnpa/include)
 
-add_definitions(-std=c++11)
+add_definitions(-std=c++11 -O2)
 
 file(
 GLOB_RECURSE
