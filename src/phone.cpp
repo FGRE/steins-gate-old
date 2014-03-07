@@ -136,6 +136,8 @@ Phone::~Phone()
     delete pPhoneTex;
     delete pPhoneOpenTex;
     delete pWallpaper;
+    delete PhoneModes[MODE_DEFAULT_OPERATABLE];
+    delete PhoneModes[MODE_ADDRESS_BOOK];
 }
 
 void Phone::UpdateOpenMode(int32_t OpenMode)
