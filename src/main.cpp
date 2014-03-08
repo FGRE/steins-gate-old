@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     pGame->GLCallback(std::bind(&SGInterpreter::Initialize, pInterpreter, pGame));
     pGame->Run();
     delete pGame;
-    delete sResourceMgr;
     delete pInterpreter;
+    delete sResourceMgr;
     return 0;
 }
