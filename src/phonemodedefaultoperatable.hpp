@@ -30,7 +30,6 @@ protected:
     PhoneModeDefaultOperatable(Phone* pPhone);
 
     virtual void OnOpen(uint8_t OldMode);
-    virtual void OnClose();
     virtual void Draw(sf::RenderWindow* pWindow);
     virtual void MouseMoved(sf::Vector2i Pos);
     virtual uint8_t LeftMouseClicked();

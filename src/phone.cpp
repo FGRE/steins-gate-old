@@ -143,6 +143,8 @@ void Phone::Draw(sf::RenderWindow* pWindow)
             if (ShowOverlay)
                 pWindow->draw(Overlay);
         }
+        if (Mode == MODE_ADDRESS_CONFIRM_DIAL)
+            PhoneModes[MODE_ADDRESS_BOOK]->Draw(pWindow);
         if (Mode == MODE_DEFAULT_OPERATABLE || Mode == MODE_ADDRESS_BOOK)
             pMode->Draw(pWindow);
         if (Mode == MODE_MAIL_MENU)
@@ -233,9 +235,6 @@ void Phone::UpdateMode(uint8_t NewMode)
 {
     if (NewMode == Mode || NewMode == MODE_INVALID)
         return;
-
-    if (Mode == MODE_DEFAULT_OPERATABLE)
-        pMode->OnClose();
 
     pMode = PhoneModes[NewMode];
     switch (NewMode)

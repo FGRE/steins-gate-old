@@ -78,10 +78,6 @@ void PhoneModeAddressBook::OnOpen(uint8_t OldMode)
     HeaderText.setString(sf::String::fromUtf8(HeaderString[0], HeaderString[0] + strlen(HeaderString[0]) - 3));
 }
 
-void PhoneModeAddressBook::OnClose()
-{
-}
-
 void PhoneModeAddressBook::Draw(sf::RenderWindow* pWindow)
 {
     pWindow->draw(Mask);

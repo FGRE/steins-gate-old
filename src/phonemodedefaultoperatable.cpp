@@ -105,10 +105,6 @@ void PhoneModeDefaultOperatable::OnOpen(uint8_t OldMode)
     }
 }
 
-void PhoneModeDefaultOperatable::OnClose()
-{
-}
-
 void PhoneModeDefaultOperatable::Draw(sf::RenderWindow* pWindow)
 {
     pWindow->draw(MenuOverlay);
