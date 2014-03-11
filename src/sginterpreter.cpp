@@ -67,8 +67,8 @@ SGInterpreter::SGInterpreter()
 
 SGInterpreter::~SGInterpreter()
 {
-    delete pPhone;
     pScriptThread->join();
+    delete pPhone;
     delete pScriptThread;
 }
 
