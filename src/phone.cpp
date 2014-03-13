@@ -20,6 +20,7 @@
 #include "game.hpp"
 #include "phonemodedefaultoperatable.hpp"
 #include "phonemodeaddressbook.hpp"
+#include "phonemodemailmenu.hpp"
 #include "phonesd.hpp"
 #include <SFML/Graphics/Texture.hpp>
 
@@ -56,31 +57,18 @@ const char* HeaderString[] =
 const int16_t WALLPAPER_WIDTH = 220;
 const int16_t WALLPAPER_HEIGHT = 244;
 
-const int16_t OVERLAY_RED_TEX_X = 302;
-const int16_t OVERLAY_RED_TEX_Y = 722;
-const int16_t OVERLAY_RED_WIDTH = 220;
-const int16_t OVERLAY_RED_HEIGHT = 119;
-const int16_t OVERLAY_RED_POS_X = 728;
-const int16_t OVERLAY_RED_POS_Y = 159;
-
-const int16_t MAIL_MENU_TEXT_POS_X = 750;
-
 Phone::Phone(sf::Drawable* pDrawable, sf::Window* pWindow) :
 DrawableBase(pDrawable, -1, DRAWABLE_TEXTURE),
 State(PHONE_CLOSED),
 ShowSD(false),
 ShowOverlay(false),
 Mode(MODE_POWER_OFF),
-MailMenuHighlight(0),
 pWindow(pWindow)
 {
     pWallpaper = LoadTextureFromFile("cg/sys/phone/pwcg101.png", sf::IntRect());
     pPhoneTex = LoadTextureFromFile("cg/sys/phone/phone_01.png", sf::IntRect());
     pPhoneOpenTex = LoadTextureFromFile("cg/sys/phone/phone_open_anim.png", sf::IntRect());
 
-    OverlayRed.setTexture(*pPhoneTex);
-    OverlayRed.setPosition(OVERLAY_RED_POS_X, OVERLAY_RED_POS_Y);
-    OverlayRed.setTextureRect(sf::IntRect(OVERLAY_RED_TEX_X, OVERLAY_RED_TEX_Y, OVERLAY_RED_WIDTH, OVERLAY_RED_HEIGHT));
     BlueHeader.setTexture(*pPhoneTex);
     BlueHeader.setPosition(BLUE_HEADER_POS_X, BLUE_HEADER_POS_Y);
     Overlay.setTexture(*pPhoneTex);
@@ -93,16 +81,7 @@ pWindow(pWindow)
     Wallpaper.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
     ToSprite()->setPosition(PHONE_POS_X, PHONE_POS_Y);
 
-    for (int i = 0; i < 2; ++i)
-    {
-        MailMenuText[i].setString(sf::String::fromUtf8(HeaderString[i + 1], HeaderString[i + 1] + strlen(HeaderString[i + 1])));
-        MailMenuText[i].setFont(Text::Font);
-        MailMenuText[i].setPosition(MAIL_MENU_TEXT_POS_X, 170 + i * 20);
-        MailMenuText[i].setCharacterSize(20);
-        MailMenuText[i].setColor(sf::Color::Black);
-    }
-    MailMenuText[MailMenuHighlight].setColor(sf::Color::Red);
-
+    PhoneModes[MODE_MAIL_MENU] = new PhoneModeMailMenu(this);
     PhoneModes[MODE_DEFAULT_OPERATABLE] = new PhoneModeDefaultOperatable(this);
     PhoneModes[MODE_ADDRESS_BOOK] = new PhoneModeAddressBook(this);
     pSD = new PhoneSD();
@@ -143,14 +122,8 @@ void Phone::Draw(sf::RenderWindow* pWindow)
         }
         if (Mode == MODE_ADDRESS_CONFIRM_DIAL)
             PhoneModes[MODE_ADDRESS_BOOK]->Draw(pWindow);
-        if (Mode == MODE_DEFAULT_OPERATABLE || Mode == MODE_ADDRESS_BOOK)
+        if (Mode == MODE_DEFAULT_OPERATABLE || Mode == MODE_ADDRESS_BOOK || Mode == MODE_MAIL_MENU)
             pMode->Draw(pWindow);
-        if (Mode == MODE_MAIL_MENU)
-        {
-            pWindow->draw(OverlayRed);
-            for (int i = 0; i < 2; ++i)
-                pWindow->draw(MailMenuText[i]);
-        }
     }
     if (ShowSD)
         pSD->Draw(pWindow);
@@ -237,6 +210,7 @@ void Phone::UpdateMode(uint8_t NewMode)
     pMode = PhoneModes[NewMode];
     switch (NewMode)
     {
+        case MODE_MAIL_MENU:
         case MODE_ADDRESS_BOOK:
         case MODE_DEFAULT_OPERATABLE:
             pMode->OnOpen(Mode);
@@ -244,18 +218,6 @@ void Phone::UpdateMode(uint8_t NewMode)
         case MODE_DEFAULT:
             Wallpaper.setTexture(*pWallpaper);
             Wallpaper.setTextureRect(sf::IntRect(0, 0, WALLPAPER_WIDTH, WALLPAPER_HEIGHT));
-            break;
-        case MODE_MAIL_MENU:
-            if (MailMenuHighlight != 0)
-            {
-                MailMenuText[MailMenuHighlight].setColor(sf::Color::Black);
-                MailMenuText[0].setColor(sf::Color::Red);
-                MailMenuHighlight = 0;
-            }
-            Mode = NewMode; // Needed for MouseMoved to work
-            MouseMoved(sf::Mouse::getPosition(*pWindow));
-            break;
-        case MODE_POWER_OFF:
             break;
     }
     Mode = NewMode;
@@ -265,15 +227,9 @@ void Phone::MailReceive(int32_t Show)
 {
     switch (Show)
     {
-        case PHONE_CLOSING:
-            ShowOverlay = false;
-            break;
-        case PHONE_OPENING:
-            ShowOverlay = true;
-            break;
-        default:
-            std::cout << "Invalid value " << Show << " passed to MailReceive." << std::endl;
-            break;
+        case PHONE_CLOSING: ShowOverlay = false; break;
+        case PHONE_OPENING: ShowOverlay = true; break;
+        default: assert(false); break;
     }
 }
 
@@ -301,21 +257,10 @@ void Phone::MouseMoved(sf::Vector2i Pos)
 {
     switch (Mode)
     {
+        case MODE_MAIL_MENU:
         case MODE_ADDRESS_BOOK:
         case MODE_DEFAULT_OPERATABLE:
             pMode->MouseMoved(Pos);
-            break;
-        case MODE_MAIL_MENU:
-            if (Pos.x > MAIL_MENU_TEXT_POS_X && Pos.x < MAIL_MENU_TEXT_POS_X + MailMenuText[0].getLocalBounds().width)
-            {
-                int i = (Pos.y - 170) / 20;
-                if (i >= 0 && i < 2 && i != MailMenuHighlight)
-                {
-                    MailMenuText[MailMenuHighlight].setColor(sf::Color::Black);
-                    MailMenuText[i].setColor(sf::Color::Red);
-                    MailMenuHighlight = i;
-                }
-            }
             break;
     }
 }
@@ -334,12 +279,10 @@ void Phone::RightMouseClicked(SGInterpreter* pInterpreter)
 {
     switch (Mode)
     {
+        case MODE_MAIL_MENU:
         case MODE_ADDRESS_BOOK:
         case MODE_DEFAULT_OPERATABLE:
             UpdateMode(pMode->RightMouseClicked());
-            break;
-        case MODE_MAIL_MENU:
-            UpdateMode(MODE_DEFAULT_OPERATABLE);
             break;
         case MODE_DEFAULT:
             pInterpreter->PhoneToggle();

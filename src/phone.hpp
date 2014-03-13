@@ -99,6 +99,7 @@ class PhoneSD;
 
 class Phone : public DrawableBase
 {
+    friend class PhoneModeMailMenu;
     friend class PhoneModeDefaultOperatable;
     friend class PhoneModeAddressBook;
 public:
@@ -127,7 +128,6 @@ private:
     uint8_t State;
     int8_t AnimRow;
     int8_t AnimColumn;
-    int8_t MailMenuHighlight; // Currently highlighted text
     sf::Clock AnimClock;
     sf::Texture* pWallpaper;
     sf::Texture* pPhoneOpenTex; // Open/Close animation frames
@@ -135,9 +135,7 @@ private:
     sf::Sprite Wallpaper;
     sf::Sprite Header;
     sf::Sprite Overlay;
-    sf::Sprite OverlayRed;
     sf::Sprite BlueHeader;
-    sf::Text MailMenuText[2];
     sf::Window* pWindow; // Needed to move mouse pointer
     PhoneMode* pMode;
     PhoneMode* PhoneModes[MODE_INVALID];
