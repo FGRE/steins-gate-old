@@ -67,6 +67,7 @@ const int16_t MAIL_MENU_TEXT_POS_X = 750;
 
 Phone::Phone(sf::Drawable* pDrawable, sf::Window* pWindow) :
 DrawableBase(pDrawable, -1, DRAWABLE_TEXTURE),
+State(PHONE_CLOSED),
 ShowSD(false),
 ShowOverlay(false),
 Mode(MODE_POWER_OFF),
@@ -119,14 +120,11 @@ Phone::~Phone()
 
 void Phone::UpdateOpenMode(int32_t OpenMode)
 {
-    // TODO: Don't "jump" to end of animation if it didn't finish
+    if (!(State == PHONE_OPEN || State == PHONE_CLOSED))
+        return;
+
     ToSprite()->setTexture(*pPhoneOpenTex);
     State = OpenMode;
-    switch (State)
-    {
-        case PHONE_OPENING: AnimRow = PHONE_ANIM_ROW_MAX; AnimColumn = PHONE_ANIM_COLUMN_MAX; break;
-        case PHONE_CLOSING: AnimRow = 0; AnimColumn = 0; break;
-    }
     UpdateAnim();
     AnimClock.restart();
 }
