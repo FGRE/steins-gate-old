@@ -92,7 +92,6 @@ const int16_t BLUE_HEADER_HEIGHT = 23;
 
 extern const char* HeaderString[];
 
-class PhoneModeDefaultOperatable;
 class SGInterpreter;
 class PhoneMode;
 class PhoneSD;

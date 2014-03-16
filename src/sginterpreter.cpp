@@ -85,10 +85,9 @@ void SGInterpreter::Main()
     do
     {
         Start();
+        std::cout << "Executing script: " << ScriptName << std::endl;
         ExecuteScript(ScriptName);
         ScriptName = "nss/" + GetVariable<std::string>("$GameName");
-        ScriptName.back() = 'b';
-        std::cout << "Switching to: " << ScriptName << std::endl;
     } while (!StopInterpreter);
 }
 
