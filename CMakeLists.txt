@@ -21,3 +21,6 @@ link_directories(${CMAKE_SOURCE_DIR}/../libnpengine/)
 add_executable(steins-gate ${STEINSGATE_SRC})
 target_link_libraries(steins-gate npengine ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GSTREAMER_LIBRARIES} ${GSTREAMER_APP_LIBRARIES} ${GSTREAMER_VIDEO_LIBRARIES})
 set_target_properties(steins-gate PROPERTIES LINKER_LANGUAGE CXX)
+
+# install target
+install(TARGETS steins-gate DESTINATION bin)
