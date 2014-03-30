@@ -81,14 +81,7 @@ void SGInterpreter::Initialize(Game* pSteinsGate)
 
 void SGInterpreter::Main()
 {
-    std::string ScriptName = "nss/0_boot_開始スクリプト.nsb";
-    do
-    {
-        Start();
-        std::cout << "Executing script: " << ScriptName << std::endl;
-        ExecuteScript(ScriptName);
-        ScriptName = "nss/" + GetVariable<std::string>("$GameName");
-    } while (!StopInterpreter);
+    ExecuteScript("nss/0_boot_開始スクリプト.nsb");
 }
 
 void SGInterpreter::Set()
