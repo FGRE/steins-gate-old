@@ -81,6 +81,7 @@ void SGInterpreter::Initialize(Game* pSteinsGate)
 
 void SGInterpreter::Main()
 {
+    Start();
     ExecuteScript("nss/0_boot_開始スクリプト.nsb");
 }
 
@@ -108,9 +109,9 @@ void SGInterpreter::Set()
 void SGInterpreter::PhoneToggle()
 {
     if (GetVariable<int32_t>("$SF_Phone_Open") == 1)
-        SetVariable("$SF_Phone_Open", Variable{"INT", "0"});
+        SetVariable("$SF_Phone_Open", new Variable(0));
     else
-        SetVariable("$SF_Phone_Open", Variable{"INT", "1"});
+        SetVariable("$SF_Phone_Open", new Variable(1));
     SGPhoneOpen();
 }
 
@@ -163,7 +164,7 @@ void SGInterpreter::AllowPhoneCall()
     uint8_t Mask = 0;
     for (uint8_t i = 0; i < 4; ++i)
     {
-        string PhID = GetParam<string>(i);
+        string PhID = Pop<string>();
         for (uint8_t j = 0; j < 5; ++j)
         {
             if (PhID == PhoneContactString[j])
