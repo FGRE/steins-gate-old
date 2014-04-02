@@ -63,6 +63,9 @@ macrosys2.nsb:    UNK143("PhID_SUZ_0");
 SGInterpreter::SGInterpreter()
 {
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
+
+    SetVariable("#N2Start", new Variable("false"));
+    SetVariable("#SYSTEM_cosplay_patch", new Variable("false"));
 }
 
 SGInterpreter::~SGInterpreter()
@@ -82,7 +85,7 @@ void SGInterpreter::Initialize(Game* pSteinsGate)
 void SGInterpreter::Main()
 {
     Start();
-    ExecuteScript("nss/0_boot_開始スクリプト.nsb");
+    ExecuteScript("nss/0_boot.nsb");
 }
 
 void SGInterpreter::Set()
