@@ -19,6 +19,7 @@
 #include "phone.hpp"
 #include "steinsgate.hpp"
 #include "nsbmagic.hpp"
+#include "nsbcontext.hpp"
 #include <thread>
 
 static const string PhoneModeString[] =
@@ -92,7 +93,7 @@ void SGInterpreter::Set()
 {
     NsbInterpreter::Set();
 
-    const string& Identifier = pContext->pLine->Params[0];
+    const string& Identifier = pContext->GetLineArgs()[0];
 
     // Handle hardcoded phone operations
     if (Identifier == "$SF_Phone_Open")
