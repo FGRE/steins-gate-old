@@ -67,6 +67,7 @@ SGInterpreter::SGInterpreter()
 
     SetVariable("#N2Start", new Variable("false"));
     SetVariable("#SYSTEM_cosplay_patch", new Variable("false"));
+    SetVariable("$GameClose", new Variable("false"));
 }
 
 SGInterpreter::~SGInterpreter()
