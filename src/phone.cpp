@@ -234,9 +234,11 @@ void Phone::MailReceive(int32_t Show)
     }
 }
 
-void Phone::SetDate(string Date)
+void Phone::SetDate(int32_t Date)
 {
-    pSD->SetDate(Date);
+    string DateStr = boost::lexical_cast<string>(Date);
+    if (DateStr.size() == 3) DateStr = string("0") + DateStr;
+    pSD->SetDate(DateStr);
 }
 
 void Phone::SDDisplay(int32_t Show)

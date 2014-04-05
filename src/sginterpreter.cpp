@@ -68,6 +68,10 @@ SGInterpreter::SGInterpreter()
     SetVariable("#N2Start", new Variable("false"));
     SetVariable("#SYSTEM_cosplay_patch", new Variable("false"));
     SetVariable("$GameClose", new Variable("false"));
+
+    SetVariable("$GameStart", new Variable(0));
+    SetVariable("$TitleSelect", new Variable(1));
+    SetVariable("$silhouette", new Variable("false"));
 }
 
 SGInterpreter::~SGInterpreter()
@@ -92,9 +96,9 @@ void SGInterpreter::Main()
 
 void SGInterpreter::Set()
 {
-    NsbInterpreter::Set();
-
     const string& Identifier = pContext->GetLineArgs()[0];
+    if (Identifier != "$TitleSelect")
+        NsbInterpreter::Set();
 
     // Handle hardcoded phone operations
     if (Identifier == "$SF_Phone_Open")
@@ -106,7 +110,7 @@ void SGInterpreter::Set()
     else if (Identifier == "$SF_PhoneSD_Disp")
         pGame->GLCallback(std::bind(&Phone::SDDisplay, pPhone, GetVariable<int32_t>("$SF_PhoneSD_Disp")));
     else if (Identifier == "$LR_DATE")
-        pGame->GLCallback(std::bind(&Phone::SetDate, pPhone, GetVariable<string>("$LR_DATE")));
+        pGame->GLCallback(std::bind(&Phone::SetDate, pPhone, GetVariable<int32_t>("$LR_DATE")));
     else if (Identifier == "$SW_PHONE_PRI")
         pGame->GLCallback(std::bind(&SGInterpreter::SGPhonePriority, this));
 }
