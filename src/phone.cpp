@@ -111,6 +111,15 @@ void Phone::UpdateOpenMode(int32_t OpenMode)
 
 void Phone::Draw(sf::RenderWindow* pWindow)
 {
+    // Update
+    if (!(AnimClock.getElapsedTime().asMilliseconds() < PHONE_ANIM_SPEED
+        || State == PHONE_OPEN || State == PHONE_CLOSED))
+    {
+        UpdateAnim();
+        AnimClock.restart();
+    }
+
+    // Draw
     DrawableBase::Draw(pWindow);
     if (State == PHONE_OPEN)
     {
@@ -128,16 +137,6 @@ void Phone::Draw(sf::RenderWindow* pWindow)
     }
     if (ShowSD)
         pSD->Draw(pWindow);
-}
-
-void Phone::Update()
-{
-    if (AnimClock.getElapsedTime().asMilliseconds() < PHONE_ANIM_SPEED
-        || State == PHONE_OPEN || State == PHONE_CLOSED)
-        return;
-
-    UpdateAnim();
-    AnimClock.restart();
 }
 
 void Phone::UpdateAnim()

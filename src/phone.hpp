@@ -106,7 +106,6 @@ public:
     virtual ~Phone();
 
     virtual void Draw(sf::RenderWindow* pWindow);
-    virtual void Update();
     void SetDate(int32_t Date);
     void SDDisplay(int32_t Show);
     void MailReceive(int32_t Show);
