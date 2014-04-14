@@ -99,7 +99,10 @@ void SGInterpreter::Set()
     const string& Identifier = pContext->GetLineArgs()[0];
     if (Identifier != "$TitleSelect")
         NsbInterpreter::Set();
+}
 
+void SGInterpreter::OnVariableChanged(const string& Identifier)
+{
     // Handle hardcoded phone operations
     if (Identifier == "$SF_Phone_Open")
         pGame->GLCallback(std::bind(&SGInterpreter::SGPhoneOpen, this));
@@ -113,6 +116,15 @@ void SGInterpreter::Set()
         pGame->GLCallback(std::bind(&Phone::SetDate, pPhone, GetVariable<int32_t>("$LR_DATE")));
     else if (Identifier == "$SW_PHONE_PRI")
         pGame->GLCallback(std::bind(&SGInterpreter::SGPhonePriority, this));
+    else if (Identifier == "$SW_PHONE_ADRMENUCUR")
+        PhoneAddressMenuHighlight();
+}
+
+void SGInterpreter::PhoneAddressMenuHighlight()
+{
+    int32_t Index = GetVariable<int32_t>("$SW_PHONE_ADRMENUCUR");
+    pGame->GLCallback(std::bind(&Phone::AddressMenuHighlight, pPhone, Index));
+    SetVariable("$SW_PHONE_ADRCURCNO", new Variable(PhoneContactString[Index]));
 }
 
 void SGInterpreter::PhoneToggle()

@@ -90,15 +90,9 @@ void PhoneModeAddressBook::Draw(sf::RenderWindow* pWindow)
 
 void PhoneModeAddressBook::MouseMoved(sf::Vector2i Pos)
 {
-    if (Pos.x > BLUE_HEADER_POS_X && Pos.x < BLUE_HEADER_POS_X + MASK_WIDTH && Pos.y > BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT)
-    {
-        int i = (Pos.y - (BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT)) / 20;
-        if (i >= 0 && i < 5)
-        {
-            Highlight.setPosition(BLUE_HEADER_POS_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + i * 20);
-            ContactHighlight = i;
-        }
-    }
+    if (Pos.x > BLUE_HEADER_POS_X && Pos.x < BLUE_HEADER_POS_X + MASK_WIDTH &&
+        Pos.y > BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT)
+        SetHighlight((Pos.y - (BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT)) / 20);
 }
 
 uint8_t PhoneModeAddressBook::LeftMouseClicked()
@@ -111,4 +105,13 @@ uint8_t PhoneModeAddressBook::LeftMouseClicked()
 uint8_t PhoneModeAddressBook::RightMouseClicked()
 {
     return MODE_DEFAULT_OPERATABLE;
+}
+
+void PhoneModeAddressBook::SetHighlight(int8_t Index)
+{
+    if (Index < 0 || Index > 4)
+        return;
+
+    Highlight.setPosition(BLUE_HEADER_POS_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + Index * 20);
+    ContactHighlight = Index;
 }

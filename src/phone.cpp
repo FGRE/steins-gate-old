@@ -297,3 +297,9 @@ void Phone::SetPhoneCallAllowMask(uint8_t Mask)
     PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
     pMode->CallAllowedMask = Mask;
 }
+
+void Phone::AddressMenuHighlight(int32_t Index)
+{
+    PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
+    pMode->SetHighlight(Index);
+}

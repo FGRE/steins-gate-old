@@ -38,6 +38,7 @@ public:
     void MouseMoved(sf::Vector2i Pos);
     void MouseClicked(sf::Event::MouseButtonEvent Event);
 
+    virtual void OnVariableChanged(const string& Identifier);
 protected:
     void Set();
 
@@ -45,6 +46,7 @@ private:
     void AllowPhoneCall();
 
     void PhoneToggle();
+    void PhoneAddressMenuHighlight();
     void SGPhoneOpen();
     void SGPhoneMode();
     void SGPhonePriority();

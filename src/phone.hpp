@@ -116,6 +116,7 @@ public:
     void LeftMouseClicked(sf::Vector2i Pos);
     void RightMouseClicked(SGInterpreter* pInterpreter);
     void SetPhoneCallAllowMask(uint8_t Mask);
+    void AddressMenuHighlight(int32_t Index);
 
 private:
     void UpdateAnim();

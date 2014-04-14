@@ -37,6 +37,7 @@ protected:
     virtual uint8_t LeftMouseClicked();
     virtual uint8_t RightMouseClicked();
 
+    void SetHighlight(int8_t Highlight);
 private:
     int8_t ContactHighlight;
     uint8_t CallAllowedMask;
