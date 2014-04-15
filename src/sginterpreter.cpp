@@ -129,6 +129,7 @@ void SGInterpreter::PhoneToggle()
 
 void SGInterpreter::MouseClicked(sf::Event::MouseButtonEvent Event)
 {
+    NsbInterpreter::MouseClicked(Event);
     if (Event.button == sf::Mouse::Left)
         pPhone->LeftMouseClicked(sf::Vector2i(Event.x, Event.y));
     else if (Event.button == sf::Mouse::Right)
