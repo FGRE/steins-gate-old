@@ -39,8 +39,6 @@ public:
     void MouseClicked(sf::Event::MouseButtonEvent Event);
 
     virtual void OnVariableChanged(const string& Identifier);
-protected:
-    void Set();
 
 private:
     void AllowPhoneCall();

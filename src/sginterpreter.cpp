@@ -68,9 +68,7 @@ SGInterpreter::SGInterpreter()
     SetVariable("#N2Start", new Variable("false"));
     SetVariable("#SYSTEM_cosplay_patch", new Variable("false"));
     SetVariable("$GameClose", new Variable("false"));
-
     SetVariable("$GameStart", new Variable(0));
-    SetVariable("$TitleSelect", new Variable(1));
     SetVariable("$silhouette", new Variable("false"));
 }
 
@@ -92,13 +90,6 @@ void SGInterpreter::Main()
 {
     Start();
     ExecuteScript("nss/0_boot.nsb");
-}
-
-void SGInterpreter::Set()
-{
-    const string& Identifier = pContext->GetLineArgs()[0];
-    if (Identifier != "$TitleSelect")
-        NsbInterpreter::Set();
 }
 
 void SGInterpreter::OnVariableChanged(const string& Identifier)
