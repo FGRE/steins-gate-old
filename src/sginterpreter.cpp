@@ -70,6 +70,7 @@ SGInterpreter::SGInterpreter()
     SetVariable("$GameClose", new Variable("false"));
     SetVariable("$GameStart", new Variable(0));
     SetVariable("$silhouette", new Variable("false"));
+    SetVariable("$OnDialog", new Variable("false"));
 }
 
 SGInterpreter::~SGInterpreter()
