@@ -89,6 +89,9 @@ void SGInterpreter::Initialize(Game* pSteinsGate)
 
 void SGInterpreter::Main()
 {
+    // HACK: Fixes standing characters
+    sResourceMgr->GetScriptFile("nss/function_stand.nsb")->GetLine(1083)->Magic = MAGIC_RETURN;
+
     Start();
     ExecuteScript("nss/0_boot.nsb");
 }
