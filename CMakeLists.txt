@@ -6,8 +6,10 @@ set(CMAKE_BUILD_TYPE Debug)
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(SFML 2 REQUIRED COMPONENTS system window graphics)
 find_package(GStreamer REQUIRED)
-include_directories(${CMAKE_SOURCE_DIR}/../libnpengine/include)
-include_directories(${CMAKE_SOURCE_DIR}/../libnpa/include)
+find_package(GLIB REQUIRED)
+include_directories(${CMAKE_SOURCE_DIR}/../libnpengine/include
+${CMAKE_SOURCE_DIR}/../libnpa/include
+${GLIB_INCLUDE_DIRS})
 
 add_definitions(-std=c++11 -O2)
 
