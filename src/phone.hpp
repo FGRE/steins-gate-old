@@ -101,6 +101,7 @@ class Phone : public DrawableBase
     friend class PhoneModeMailMenu;
     friend class PhoneModeDefaultOperatable;
     friend class PhoneModeAddressBook;
+    friend class PhoneModeSendMailEdit;
 public:
     Phone(sf::Drawable* pDrawable, sf::Window* pWindow);
     virtual ~Phone();

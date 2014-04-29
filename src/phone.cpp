@@ -18,6 +18,7 @@
 #include "sginterpreter.hpp"
 #include "phone.hpp"
 #include "game.hpp"
+#include "phonemodesendmailedit.hpp"
 #include "phonemodedefaultoperatable.hpp"
 #include "phonemodeaddressbook.hpp"
 #include "phonemodemailmenu.hpp"
@@ -84,6 +85,7 @@ pWindow(pWindow)
     PhoneModes[MODE_MAIL_MENU] = new PhoneModeMailMenu(this);
     PhoneModes[MODE_DEFAULT_OPERATABLE] = new PhoneModeDefaultOperatable(this);
     PhoneModes[MODE_ADDRESS_BOOK] = new PhoneModeAddressBook(this);
+    PhoneModes[MODE_SEND_MAIL_EDIT] = new PhoneModeSendMailEdit(this);
     pSD = new PhoneSD();
 }
 
@@ -95,6 +97,7 @@ Phone::~Phone()
     delete PhoneModes[MODE_MAIL_MENU];
     delete PhoneModes[MODE_DEFAULT_OPERATABLE];
     delete PhoneModes[MODE_ADDRESS_BOOK];
+    delete PhoneModes[MODE_SEND_MAIL_EDIT];
     delete pSD;
 }
 
@@ -132,7 +135,9 @@ void Phone::Draw(sf::RenderWindow* pWindow)
         }
         if (Mode == MODE_ADDRESS_CONFIRM_DIAL)
             PhoneModes[MODE_ADDRESS_BOOK]->Draw(pWindow);
-        if (Mode == MODE_DEFAULT_OPERATABLE || Mode == MODE_ADDRESS_BOOK || Mode == MODE_MAIL_MENU)
+        if (Mode == MODE_ADDRESS_CONFIRM_MAIL)
+            PhoneModes[MODE_SEND_MAIL_EDIT]->Draw(pWindow);
+        if (Mode == MODE_DEFAULT_OPERATABLE || Mode == MODE_ADDRESS_BOOK || Mode == MODE_MAIL_MENU || Mode == MODE_SEND_MAIL_EDIT)
             pMode->Draw(pWindow);
     }
     if (ShowSD)
