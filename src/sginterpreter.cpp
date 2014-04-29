@@ -89,12 +89,18 @@ void SGInterpreter::Initialize(Game* pSteinsGate)
     pScriptThread = new std::thread(std::bind(&SGInterpreter::Main, this));
 }
 
+void SGInterpreter::WriteHack(const char* ScriptName, uint32_t LineNumber, uint16_t NewMagic)
+{
+    sResourceMgr->GetScriptFile(ScriptName)->GetLine(LineNumber)->Magic = NewMagic;
+}
+
 void SGInterpreter::Main()
 {
-    // HACK: Fixes standing characters
-    sResourceMgr->GetScriptFile("nss/function_stand.nsb")->GetLine(1083)->Magic = MAGIC_RETURN;
-    // HACK: Fixes getting stuck on calling microwave
-    sResourceMgr->GetScriptFile("nss/sg01_03.nsb")->GetLine(890)->Magic = MAGIC_CLEAR_PARAMS;
+    // Fixes standing characters
+    WriteHack("nss/function_stand.nsb", 1083, MAGIC_RETURN);
+    // Fixes getting stuck on calling microwave
+    WriteHack("nss/sg01_03.nsb", 890, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_03.nsb", 1057, MAGIC_CLEAR_PARAMS);
 
     Start();
     ExecuteScript("nss/0_boot.nsb");

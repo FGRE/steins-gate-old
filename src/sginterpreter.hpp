@@ -41,6 +41,7 @@ public:
     virtual void OnVariableChanged(const string& Identifier);
 
 private:
+    void WriteHack(const char* ScriptName, uint32_t LineNumber, uint16_t NewMagic);
     void AllowPhoneCall();
 
     void PhoneToggle();
