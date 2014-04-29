@@ -101,6 +101,7 @@ void SGInterpreter::Main()
     // Fixes getting stuck on calling microwave
     WriteHack("nss/sg01_03.nsb", 890, MAGIC_CLEAR_PARAMS);
     WriteHack("nss/sg01_03.nsb", 1057, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_03.nsb", 1188, MAGIC_CLEAR_PARAMS);
 
     Start();
     ExecuteScript("nss/0_boot.nsb");
