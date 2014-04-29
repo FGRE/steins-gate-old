@@ -93,8 +93,6 @@ void SGInterpreter::Main()
 {
     // HACK: Fixes standing characters
     sResourceMgr->GetScriptFile("nss/function_stand.nsb")->GetLine(1083)->Magic = MAGIC_RETURN;
-    // HACK: Fixes getting stuck on sending mail to Daru
-    sResourceMgr->GetScriptFile("nss/macrosys2.nsb")->GetLine(1095)->Magic = MAGIC_RETURN;
     // HACK: Fixes getting stuck on calling microwave
     sResourceMgr->GetScriptFile("nss/sg01_03.nsb")->GetLine(890)->Magic = MAGIC_CLEAR_PARAMS;
 
