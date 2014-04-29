@@ -61,6 +61,8 @@ macrosys2.nsb:    UNK143("PhID_SUZ_0");
 */
 };
 
+extern std::map<std::string, int32_t> NsbConstants;
+
 SGInterpreter::SGInterpreter()
 {
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
@@ -117,6 +119,12 @@ void SGInterpreter::OnVariableChanged(const string& Identifier)
         pGame->GLCallback(std::bind(&SGInterpreter::SGPhonePriority, this));
     else if (Identifier == "$SW_PHONE_ADRMENUCUR")
         PhoneAddressMenuHighlight();
+    else
+    {
+        auto iter = NsbConstants.find(GetVariable<string>(Identifier));
+        if (iter != NsbConstants.end())
+            SetVariable(Identifier, new Variable(iter->second));
+    }
 }
 
 void SGInterpreter::PhoneAddressMenuHighlight()
