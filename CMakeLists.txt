@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project (steins-gate)
 
-set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../libnpengine/cmake/Modules")
+set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 set(CMAKE_BUILD_TYPE Debug)
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(SFML 2 REQUIRED COMPONENTS system window graphics)
