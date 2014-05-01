@@ -20,6 +20,7 @@ message(STATUS "Configuring steins-gate version " ${VERSION})
 
 # project name and language
 project (steins-gate CXX)
+
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 
@@ -40,7 +41,10 @@ include_directories(
     ${NPENGINE_INCLUDE_DIR}
     ${GLIB_INCLUDE_DIRS}
 )
-link_directories(${NPENGINE_LIBRARY_DIR} ${NPA_LIBRARY_DIR})
+link_directories(
+    ${NPENGINE_LIBRARY_DIR}
+    ${NPA_LIBRARY_DIR}
+)
 
 add_executable(steins-gate
     src/main.cpp
@@ -63,3 +67,8 @@ target_link_libraries(steins-gate
 
 # install target
 install(TARGETS steins-gate DESTINATION bin)
+
+# create packages
+set(CPACK_GENERATOR "TBZ2")
+set(CPACK_PACKAGE_VERSION ${VERSION})
+include(CPack)
