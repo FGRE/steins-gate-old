@@ -8,6 +8,25 @@ env:
   # this is our secret upload key $SECRET_TOKEN:
   secure: "XtapC9jbqC/A+G6RoQf8kUxGt//h8xJqXfXTV4LbaOmNp3KZ3UHyFcw1niUaLmIdVrGltbqt9LJ82XRfxu34G3KP8b4cBMoUMHmDYpKM78UA1ChC36ZLhbXl/vTiHwTxpgAMv+nbpFv1Dxz/MRqB8DjuYdyBTS86zbwQ109A3C8="
 
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+  irc:
+    channels:
+      # WORKAROUND: prevents notifications from forks
+      secure: "iZO4UF2P8Y/8FQyhUnDsFxYSfbTXZBtTK42+czuaQnTZ4YsbCRZdB4kl3iMriJB+5GAdoSolzYv4lm9NMyTK5jGEWy06+ZuNPVg8hKSJJWlYlyJ3UwVHGR3VUohDtNEUlZr9WSOYEpkBzaYYUyBXLK7UdF+vcv2zKktWz1pAAQw="
+    template:
+      - "%{repository_name} (%{commit}): %{message}, details: %{build_url}"
+    on_success: change
+    on_failure: change
+    use_notice: true
+    skip_join: true
+
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo add-apt-repository -y ppa:gstreamer-developers/ppa
