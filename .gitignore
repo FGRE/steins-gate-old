@@ -1,24 +1,26 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# cmake files
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+_CPack_Packages
+install_manifest.txt
+*.tar.bz2
+src/version.hpp
+!cmake/Modules/*.cmake
 
-# Compiled Static libraries
-*.lai
-*.la
+# libraries
 *.a
+*.dll
+*.dylib
+*.lib
+*.so
 
-# Game files and executables
-dx
-cg.npa
-nss.npa
-sound.npa
-voice.npa
-system.npa
+# executable
 steins-gate
+
+# game files
+dx/
+*.npa
 *.exe
