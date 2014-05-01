@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 #include "nsbinterpreter.hpp"
+#include "exefile.hpp"
 
 class Phone;
 class SteinsGate;
@@ -42,6 +43,8 @@ public:
 
 private:
     void WriteHack(const char* ScriptName, uint32_t LineNumber, uint16_t NewMagic);
+
+    void UNK130();
     void AllowPhoneCall();
 
     void PhoneToggle();
@@ -52,4 +55,5 @@ private:
 
     Phone* pPhone;
     std::thread* pScriptThread;
+    ExeFile Exe;
 };

@@ -18,10 +18,10 @@ GLOB_RECURSE
 STEINSGATE_SRC
 ${CMAKE_SOURCE_DIR}/src/*
 )
-link_directories(${CMAKE_SOURCE_DIR}/../libnpengine/)
+link_directories(${CMAKE_SOURCE_DIR}/../libnpengine/ ${CMAKE_SOURCE_DIR}/../libnpa)
 
 add_executable(steins-gate ${STEINSGATE_SRC})
-target_link_libraries(steins-gate npengine ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GSTREAMER_LIBRARIES} ${GSTREAMER_APP_LIBRARIES} ${GSTREAMER_VIDEO_LIBRARIES})
+target_link_libraries(steins-gate npa npengine ${Boost_LIBRARIES} ${SFML_LIBRARIES} ${GSTREAMER_LIBRARIES} ${GSTREAMER_APP_LIBRARIES} ${GSTREAMER_VIDEO_LIBRARIES})
 set_target_properties(steins-gate PROPERTIES LINKER_LANGUAGE CXX)
 
 # install target

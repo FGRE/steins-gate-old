@@ -63,9 +63,10 @@ macrosys2.nsb:    UNK143("PhID_SUZ_0");
 
 extern std::map<std::string, int32_t> NsbConstants;
 
-SGInterpreter::SGInterpreter()
+SGInterpreter::SGInterpreter() : Exe("STEINSGATE.exe")
 {
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
+    Builtins[MAGIC_UNK130] = (void(NsbInterpreter::*)())&SGInterpreter::UNK130;
 
     SetVariable("#N2Start", new Variable("false"));
     SetVariable("#SYSTEM_cosplay_patch", new Variable("false"));
@@ -193,6 +194,12 @@ void SGInterpreter::SGPhoneMode()
     pPhone->UpdateMode(Mode);
 }
 
+void SGInterpreter::UNK130()
+{
+    int32_t MessageID = GetVariable<int32_t>("$SW_PHONE_SENDMAILNO");
+}
+
+// TODO: nsbconstants
 void SGInterpreter::AllowPhoneCall()
 {
     uint8_t Mask = 0;
