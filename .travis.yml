@@ -1,0 +1,65 @@
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+env:
+  # this is our secret upload key $SECRET_TOKEN:
+  secure: "XtapC9jbqC/A+G6RoQf8kUxGt//h8xJqXfXTV4LbaOmNp3KZ3UHyFcw1niUaLmIdVrGltbqt9LJ82XRfxu34G3KP8b4cBMoUMHmDYpKM78UA1ChC36ZLhbXl/vTiHwTxpgAMv+nbpFv1Dxz/MRqB8DjuYdyBTS86zbwQ109A3C8="
+
+branches:
+  only:
+    - master
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+  irc:
+    channels:
+      # WORKAROUND: prevents notifications from forks
+      secure: "iZO4UF2P8Y/8FQyhUnDsFxYSfbTXZBtTK42+czuaQnTZ4YsbCRZdB4kl3iMriJB+5GAdoSolzYv4lm9NMyTK5jGEWy06+ZuNPVg8hKSJJWlYlyJ3UwVHGR3VUohDtNEUlZr9WSOYEpkBzaYYUyBXLK7UdF+vcv2zKktWz1pAAQw="
+    template:
+      - "%{repository_name} (%{commit}): %{message}, details: %{build_url}"
+    on_success: change
+    on_failure: change
+    use_notice: true
+    skip_join: true
+
+before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo add-apt-repository -y ppa:gstreamer-developers/ppa
+  - sudo add-apt-repository -y ppa:boost-latest/ppa
+  - sudo apt-get update -qq
+
+install:
+  - >
+    sudo apt-get install -qq libpthread-stubs0-dev libgl1-mesa-dev libx11-dev
+    libxrandr-dev libfreetype6-dev libglew1.5-dev libjpeg8-dev libgpgme11-dev
+    libsndfile1-dev libopenal-dev libudev-dev
+    libgstreamer-plugins-base1.0-dev
+    libglib2.0-dev
+    libboost-locale1.55-dev libboost-system1.55-dev
+    lftp
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
+  - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.8-dev; fi
+
+before_script:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8"; fi
+  - curl http://dev.pulsir.eu/krofna/downloads/3rdparty/sfml-2.1.0.4a300547f3-1-x86_64.tar.bz2 | sudo tar jx --strip-components=1 -C /
+  - cd .. && mkdir libnpa && cd libnpa
+  - curl http://dev.pulsir.eu/krofna/downloads/latest.php?p=libnpa | tar jx --strip-components=1
+  - cd .. && mkdir libnpengine && cd libnpengine
+  - curl http://dev.pulsir.eu/krofna/downloads/latest.php?p=libnpengine | tar jx --strip-components=1
+  - cd $TRAVIS_BUILD_DIR
+
+script:
+  - cmake . && make
+
+after_success:
+  - |
+    if [ "$CXX" = "g++-4.8" ]; then
+      curl https://gist.githubusercontent.com/carstene1ns/a23f152a40a589f098c6/raw/upload.sh > upload.sh
+      make package && bash upload.sh steins-gate-*.tar.bz2
+    fi
