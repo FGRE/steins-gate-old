@@ -22,6 +22,13 @@
 
 int main(int argc, char** argv)
 {
+    if (argc != 2)
+    {
+        std::cout << "usage: " << argv[0] << " <charset>" << std::endl;
+        return 1;
+    }
+
+    NpaFile::SetLocale(argv[1]);
     SGInterpreter* pInterpreter = new SGInterpreter;
     SteinsGate* pGame = new SteinsGate(pInterpreter);
     pGame->GLCallback(std::bind(&SGInterpreter::Initialize, pInterpreter, pGame));
