@@ -74,6 +74,11 @@ const int16_t PHONE_WALLPAPER_Y = PHONE_HEADER_POS_Y + PHONE_HEADER_HEIGHT; // T
 const int16_t PHONE_OVERLAY_POS_X = PHONE_WALLPAPER_X;
 const int16_t PHONE_OVERLAY_POS_Y = 180;
 
+const int16_t MASK_TEX_X = 425;
+const int16_t MASK_TEX_Y = 21;
+const int16_t MASK_WIDTH = 220;
+const int16_t MASK_HEIGHT = 253;
+
 enum
 {
     BLUE_HEADER_MAIL,
@@ -118,6 +123,7 @@ public:
     void RightMouseClicked(SGInterpreter* pInterpreter);
     void SetPhoneCallAllowMask(uint8_t Mask);
     void AddressMenuHighlight(int32_t Index);
+    void PhoneSendMailEdit(const string& Subject, const string& Sender, const string& Body);
 
 private:
     void UpdateAnim();

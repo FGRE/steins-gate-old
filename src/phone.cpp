@@ -217,6 +217,7 @@ void Phone::UpdateMode(uint8_t NewMode)
     {
         case MODE_MAIL_MENU:
         case MODE_ADDRESS_BOOK:
+        case MODE_SEND_MAIL_EDIT:
         case MODE_DEFAULT_OPERATABLE:
             pMode->OnOpen(Mode);
             break;
@@ -307,4 +308,10 @@ void Phone::AddressMenuHighlight(int32_t Index)
 {
     PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
     pMode->SetHighlight(Index);
+}
+
+void Phone::PhoneSendMailEdit(const string& Subject, const string& Sender, const string& Body)
+{
+    PhoneModeSendMailEdit* pMode = (PhoneModeSendMailEdit*)PhoneModes[MODE_SEND_MAIL_EDIT];
+    pMode->SetText(Subject, Sender, Body);
 }

@@ -17,15 +17,11 @@
  * */
 #include "phonemodeaddressbook.hpp"
 #include "phone.hpp"
-#include "nsbinterpreter.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <cstring>
 
-const int16_t MASK_TEX_X = 425;
-const int16_t MASK_TEX_Y = 21;
-const int16_t MASK_WIDTH = 220;
-const int16_t MASK_HEIGHT = 253;
+sf::Texture* LoadTextureFromColor(string Color, int32_t Width, int32_t Height);
 
 const char* ContactString[] =
 {

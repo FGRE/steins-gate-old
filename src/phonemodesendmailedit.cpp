@@ -19,17 +19,37 @@
 #include "phone.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 
+sf::Texture* LoadTextureFromColor(string Color, int32_t Width, int32_t Height);
+
 PhoneModeSendMailEdit::PhoneModeSendMailEdit(Phone* pPhone) : PhoneMode(pPhone)
 {
+    pWhite = LoadTextureFromColor("white", MASK_WIDTH, MASK_HEIGHT);
+    Mask.setTexture(*pPhone->pPhoneTex);
+    Mask.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
+
+    Body.setPosition(729.0f, 144.0f);
+    Body.setCharacterSize(17);
+    Body.setFont(Text::Font);
+    Body.setColor(sf::Color::Black);
+}
+
+PhoneModeSendMailEdit::~PhoneModeSendMailEdit()
+{
+    delete pWhite;
 }
 
 void PhoneModeSendMailEdit::OnOpen(uint8_t OldMode)
 {
+    pPhone->Wallpaper.setTexture(*pWhite, true);
+    sf::IntRect MaskClipArea(MASK_TEX_X, MASK_TEX_Y, MASK_WIDTH, MASK_HEIGHT);
+    Mask.setTextureRect(MaskClipArea);
 }
 
 void PhoneModeSendMailEdit::Draw(sf::RenderWindow* pWindow)
 {
+    pWindow->draw(Mask);
     pWindow->draw(pPhone->BlueHeader);
+    pWindow->draw(Body);
 }
 
 void PhoneModeSendMailEdit::MouseMoved(sf::Vector2i Pos)
@@ -44,4 +64,9 @@ uint8_t PhoneModeSendMailEdit::LeftMouseClicked()
 uint8_t PhoneModeSendMailEdit::RightMouseClicked()
 {
     return MODE_INVALID;
+}
+
+void PhoneModeSendMailEdit::SetText(const string& Subject, const string& Sender, const string& Body)
+{
+    this->Body.setString(sf::String::fromUtf8(Body.begin(), Body.end()));
 }

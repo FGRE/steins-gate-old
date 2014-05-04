@@ -196,7 +196,13 @@ void SGInterpreter::SGPhoneMode()
 
 void SGInterpreter::UNK130()
 {
+    static const uint32_t ja_JP = 0x643d68, en_US = 0x63d338;
     int32_t MessageID = GetVariable<int32_t>("$SW_PHONE_SENDMAILNO");
+    uint32_t Address = (MessageID << 6) + en_US;
+    string Subject = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x34));
+    string Sender = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x38));
+    string Body = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x3C));
+    pGame->GLCallback(std::bind(&Phone::PhoneSendMailEdit, pPhone, Subject, Sender, Body));
 }
 
 // TODO: nsbconstants

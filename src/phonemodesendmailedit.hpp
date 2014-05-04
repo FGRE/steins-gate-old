@@ -19,6 +19,9 @@
 #define PHONE_MODE_SEND_MAIL_EDIT_HPP
 
 #include "phonemode.hpp"
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
+using std::string;
 
 class Phone;
 
@@ -27,6 +30,7 @@ class PhoneModeSendMailEdit : PhoneMode
     friend class Phone;
 protected:
     PhoneModeSendMailEdit(Phone* pPhone);
+    ~PhoneModeSendMailEdit();
 
     virtual void OnOpen(uint8_t OldMode);
     virtual void Draw(sf::RenderWindow* pWindow);
@@ -34,7 +38,11 @@ protected:
     virtual uint8_t LeftMouseClicked();
     virtual uint8_t RightMouseClicked();
 
+    void SetText(const string& Subject, const string& Sender, const string& Body);
 private:
+    sf::Texture* pWhite;
+    sf::Sprite Mask;
+    sf::Text Subject, Sender, Body;
 };
 
 #endif
