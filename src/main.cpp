@@ -18,18 +18,36 @@
 #include "steinsgate.hpp"
 #include "sginterpreter.hpp"
 #include "resourcemgr.hpp"
-#include "text.hpp"
+
+int PrintArguments(char** argv)
+{
+    std::cout << "usage: " << argv[0] << " <Nitroplus | JAST | Fuwanovel>" << std::endl;
+    return 1;
+}
+
+ExePublisher ParseExeVersion(char** argv)
+{
+    string VersionString = argv[1];
+    if (VersionString == "Nitroplus")
+        return EXE_NITROPLUS;
+    else if (VersionString == "JAST")
+        return EXE_JAST;
+    else if (VersionString == "Fuwanovel")
+        return EXE_FUWANOVEL;
+    else
+        return EXE_INVALID;
+}
 
 int main(int argc, char** argv)
 {
     if (argc != 2)
-    {
-        std::cout << "usage: " << argv[0] << " <charset>" << std::endl;
-        return 1;
-    }
+        return PrintArguments(argv);
 
-    NpaFile::SetLocale(argv[1]);
-    SGInterpreter* pInterpreter = new SGInterpreter;
+    ExePublisher Version = ParseExeVersion(argv);
+    if (Version == EXE_INVALID)
+        return PrintArguments(argv);
+
+    SGInterpreter* pInterpreter = new SGInterpreter(Version);
     SteinsGate* pGame = new SteinsGate(pInterpreter);
     pGame->GLCallback(std::bind(&SGInterpreter::Initialize, pInterpreter, pGame));
     pGame->Run();

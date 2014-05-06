@@ -26,12 +26,21 @@ namespace std
     class thread;
 };
 
+enum ExePublisher
+{
+    EXE_NITROPLUS,
+    EXE_JAST,
+    EXE_FUWANOVEL,
+
+    EXE_INVALID
+};
+
 class SGInterpreter : public NsbInterpreter
 {
     friend class SteinsGate;
     friend class Phone;
 public:
-    SGInterpreter();
+    SGInterpreter(ExePublisher Version);
     ~SGInterpreter();
     void Initialize(Game* pSteinsGate);
     void Main();
@@ -55,5 +64,6 @@ private:
 
     Phone* pPhone;
     std::thread* pScriptThread;
+    ExePublisher Version;
     ExeFile Exe;
 };

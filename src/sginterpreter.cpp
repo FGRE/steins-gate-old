@@ -20,6 +20,7 @@
 #include "steinsgate.hpp"
 #include "nsbmagic.hpp"
 #include "nsbcontext.hpp"
+#include "exeaddress.hpp"
 #include <thread>
 
 static const string PhoneModeString[] =
@@ -63,8 +64,19 @@ macrosys2.nsb:    UNK143("PhID_SUZ_0");
 
 extern std::map<std::string, int32_t> NsbConstants;
 
-SGInterpreter::SGInterpreter() : Exe("STEINSGATE.exe")
+SGInterpreter::SGInterpreter(ExePublisher Version) : Version(Version), Exe("STEINSGATE.exe")
 {
+    switch (Version)
+    {
+        case EXE_NITROPLUS:
+            NpaFile::SetLocale("ja_JP.CP932");
+            break;
+        case EXE_JAST:
+        case EXE_FUWANOVEL:
+            NpaFile::SetLocale("en_US.UTF-16");
+            break;
+    }
+
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
     Builtins[MAGIC_UNK130] = (void(NsbInterpreter::*)())&SGInterpreter::UNK130;
 
@@ -196,9 +208,8 @@ void SGInterpreter::SGPhoneMode()
 
 void SGInterpreter::UNK130()
 {
-    static const uint32_t ja_JP = 0x643d68, en_US = 0x63d338;
-    int32_t MessageID = GetVariable<int32_t>("$SW_PHONE_SENDMAILNO");
-    uint32_t Address = (MessageID << 6) + en_US;
+    int32_t Index = GetVariable<int32_t>("$SW_PHONE_SENDMAILNO") << 6;
+    uint32_t Address = Index + AddressTable[VA_PHONE_MAIL][Version];
     string Subject = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x34));
     string Sender = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x38));
     string Body = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x3C));
