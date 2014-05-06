@@ -27,10 +27,13 @@ PhoneModeSendMailEdit::PhoneModeSendMailEdit(Phone* pPhone) : PhoneMode(pPhone)
     Mask.setTexture(*pPhone->pPhoneTex);
     Mask.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
 
-    Body.setPosition(729.0f, 144.0f);
-    Body.setCharacterSize(17);
-    Body.setFont(Text::Font);
-    Body.setColor(sf::Color::Black);
+    for (int i = 0; i < 3; ++i)
+    {
+        MailText[i].setPosition(729.0f, 144.0f + i * 17);
+        MailText[i].setCharacterSize(17);
+        MailText[i].setFont(Text::Font);
+        MailText[i].setColor(sf::Color::Black);
+    }
 }
 
 PhoneModeSendMailEdit::~PhoneModeSendMailEdit()
@@ -49,7 +52,8 @@ void PhoneModeSendMailEdit::Draw(sf::RenderWindow* pWindow)
 {
     pWindow->draw(Mask);
     pWindow->draw(pPhone->BlueHeader);
-    pWindow->draw(Body);
+    for (int i = 0; i < 3; ++i)
+        pWindow->draw(MailText[i]);
 }
 
 void PhoneModeSendMailEdit::MouseMoved(sf::Vector2i Pos)
@@ -68,5 +72,7 @@ uint8_t PhoneModeSendMailEdit::RightMouseClicked()
 
 void PhoneModeSendMailEdit::SetText(const string& Subject, const string& Sender, const string& Body)
 {
-    this->Body.setString(sf::String::fromUtf8(Body.begin(), Body.end()));
+    MailText[0].setString(sf::String::fromUtf8(Sender.begin(), Sender.end()));
+    MailText[1].setString(sf::String::fromUtf8(Subject.begin(), Subject.end()));
+    MailText[2].setString(sf::String::fromUtf8(Body.begin(), Body.end()));
 }

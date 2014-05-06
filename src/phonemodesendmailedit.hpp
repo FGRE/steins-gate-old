@@ -42,7 +42,7 @@ protected:
 private:
     sf::Texture* pWhite;
     sf::Sprite Mask;
-    sf::Text Subject, Sender, Body;
+    sf::Text MailText[3];
 };
 
 #endif
