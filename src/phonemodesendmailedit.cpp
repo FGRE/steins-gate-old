@@ -70,8 +70,9 @@ uint8_t PhoneModeSendMailEdit::RightMouseClicked()
     return MODE_INVALID;
 }
 
-void PhoneModeSendMailEdit::SetText(const string& Subject, const string& Sender, const string& Body)
+void PhoneModeSendMailEdit::SetText(const string& Subject, const string& Sender, string Body)
 {
+    Body = Text::Wrap(Body, 25);
     MailText[0].setString(sf::String::fromUtf8(Sender.begin(), Sender.end()));
     MailText[1].setString(sf::String::fromUtf8(Subject.begin(), Subject.end()));
     MailText[2].setString(sf::String::fromUtf8(Body.begin(), Body.end()));

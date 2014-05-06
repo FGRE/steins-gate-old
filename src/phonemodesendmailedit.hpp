@@ -38,7 +38,7 @@ protected:
     virtual uint8_t LeftMouseClicked();
     virtual uint8_t RightMouseClicked();
 
-    void SetText(const string& Subject, const string& Sender, const string& Body);
+    void SetText(const string& Subject, const string& Sender, string Body);
 private:
     sf::Texture* pWhite;
     sf::Sprite Mask;
