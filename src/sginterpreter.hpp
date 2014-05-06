@@ -53,6 +53,8 @@ public:
 private:
     void WriteHack(const char* ScriptName, uint32_t LineNumber, uint16_t NewMagic);
 
+    virtual void SetParam();
+
     void UNK130();
     void AllowPhoneCall();
 

@@ -120,6 +120,24 @@ void SGInterpreter::Main()
     ExecuteScript("nss/0_boot.nsb");
 }
 
+void SGInterpreter::SetParam()
+{
+    // Check for constant/macro
+    if (pContext->GetLineArgs()[0] == "STRING")
+    {
+        string Value = pContext->GetLineArgs()[1];
+        auto iter = NsbConstants.find(Value);
+        if (iter != NsbConstants.end())
+        {
+            Stack.push(new Variable(iter->second));
+            return;
+        }
+    }
+
+    // Not a constant/macro
+    NsbInterpreter::SetParam();
+}
+
 void SGInterpreter::OnVariableChanged(const string& Identifier)
 {
     // Handle hardcoded phone operations
@@ -137,12 +155,6 @@ void SGInterpreter::OnVariableChanged(const string& Identifier)
         pGame->GLCallback(std::bind(&SGInterpreter::SGPhonePriority, this));
     else if (Identifier == "$SW_PHONE_ADRMENUCUR")
         PhoneAddressMenuHighlight();
-    else
-    {
-        auto iter = NsbConstants.find(GetVariable<string>(Identifier));
-        if (iter != NsbConstants.end())
-            SetVariable(Identifier, new Variable(iter->second));
-    }
 }
 
 void SGInterpreter::PhoneAddressMenuHighlight()
