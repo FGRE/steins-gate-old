@@ -55,7 +55,7 @@ private:
 
     virtual void SetParam();
 
-    void UNK130();
+    void SendMailEdit();
     void AllowPhoneCall();
 
     void PhoneToggle();

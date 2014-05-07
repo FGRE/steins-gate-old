@@ -78,7 +78,7 @@ SGInterpreter::SGInterpreter(ExePublisher Version) : Version(Version), Exe("STEI
     }
 
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
-    Builtins[MAGIC_UNK130] = (void(NsbInterpreter::*)())&SGInterpreter::UNK130;
+    Builtins[MAGIC_SEND_MAIL_EDIT] = (void(NsbInterpreter::*)())&SGInterpreter::SendMailEdit;
 
     SetVariable("#N2Start", new Variable("false"));
     SetVariable("#SYSTEM_cosplay_patch", new Variable("false"));
@@ -218,7 +218,7 @@ void SGInterpreter::SGPhoneMode()
     pPhone->UpdateMode(Mode);
 }
 
-void SGInterpreter::UNK130()
+void SGInterpreter::SendMailEdit()
 {
     int32_t Index = GetVariable<int32_t>("$SW_PHONE_SENDMAILNO") << 6;
     uint32_t Address = Index + AddressTable[VA_PHONE_MAIL][Version];
