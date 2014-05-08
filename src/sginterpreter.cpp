@@ -69,10 +69,12 @@ SGInterpreter::SGInterpreter(ExePublisher Version) : Version(Version), Exe("STEI
     switch (Version)
     {
         case EXE_FUWANOVEL:
+            Text::WordWrap = true;
         case EXE_NITROPLUS:
             NpaFile::SetLocale("ja_JP.CP932");
             break;
         case EXE_JAST:
+            Text::WordWrap = true;
             NpaFile::SetLocale("en_US.UTF-16");
             break;
     }
