@@ -298,7 +298,7 @@ void Phone::RightMouseClicked(SGInterpreter* pInterpreter)
     }
 }
 
-void Phone::SetPhoneCallAllowMask(uint8_t Mask)
+void Phone::SetPhoneCallAllowMask(uint16_t Mask)
 {
     PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
     pMode->CallAllowedMask = Mask;

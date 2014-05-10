@@ -17,6 +17,7 @@
  * */
 #include "phonemodeaddressbook.hpp"
 #include "phone.hpp"
+#include "sgexe.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <cstring>
@@ -25,11 +26,11 @@ sf::Texture* LoadTextureFromColor(string Color, int32_t Width, int32_t Height);
 
 const char* ContactString[] =
 {
-    "ダル",
-    "電話レンジ (仮)",
-    "フェイリス",
     "まゆり",
-    "ルカ子"
+    "ダル",
+    "ルカ子",
+    "電話レンジ (仮)",
+    "フェイリス"
 };
 
 PhoneModeAddressBook::PhoneModeAddressBook(Phone* pPhone) :
@@ -45,7 +46,8 @@ CallAllowedMask(0)
 
     for (int i = 0; i < 5; ++i)
     {
-        Contacts[i].setString(sf::String::fromUtf8(ContactString[i], ContactString[i] + strlen(ContactString[i])));
+        string Name = sExe->ReadStringIndirect(VA_PHONE_ADDRMENU, i, 0xC, 0x4);
+        Contacts[i].setString(sf::String::fromUtf8(Name.begin(), Name.end()));
         Contacts[i].setFont(Text::Font);
         Contacts[i].setPosition(PHONE_WALLPAPER_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + i * 20);
         Contacts[i].setCharacterSize(20);
@@ -103,7 +105,7 @@ uint8_t PhoneModeAddressBook::RightMouseClicked()
     return MODE_DEFAULT_OPERATABLE;
 }
 
-void PhoneModeAddressBook::SetHighlight(int8_t Index)
+void PhoneModeAddressBook::SetHighlight(int16_t Index)
 {
     if (Index < 0 || Index > 4)
         return;

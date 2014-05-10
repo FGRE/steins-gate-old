@@ -15,38 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
-#ifndef PHONE_MODE_ADDRESS_BOOK_HPP
-#define PHONE_MODE_ADDRESS_BOOK_HPP
+#ifndef SG_EXE_HPP
+#define SG_EXE_HPP
 
-#include "phonemode.hpp"
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Text.hpp>
+#include "exefile.hpp"
+#include <string>
+using std::string;
 
-class Phone;
-
-class PhoneModeAddressBook : PhoneMode
+enum ExePublisher
 {
-    friend class Phone;
-protected:
-    PhoneModeAddressBook(Phone* pPhone);
-    ~PhoneModeAddressBook();
-
-    virtual void OnOpen(uint8_t OldMode);
-    virtual void Draw(sf::RenderWindow* pWindow);
-    virtual void MouseMoved(sf::Vector2i Pos);
-    virtual uint8_t LeftMouseClicked();
-    virtual uint8_t RightMouseClicked();
-
-    void SetHighlight(int16_t Highlight);
-private:
-    int16_t ContactHighlight;
-    uint16_t CallAllowedMask;
-    sf::Texture* pWhite;
-    sf::Texture* pHighlight;
-    sf::Sprite Highlight;
-    sf::Sprite Mask;
-    sf::Text HeaderText;
-    sf::Text Contacts[5];
+    EXE_NITROPLUS,
+    EXE_JAST,
+    EXE_FUWANOVEL,
+    EXE_INVALID
 };
+
+enum
+{
+    VA_PHONE_MAIL,
+    VA_PHONE_ADDRMENU
+};
+
+class SGExe : private ExeFile
+{
+public:
+    SGExe(const std::string& Name, ExePublisher Version);
+    string ReadStringIndirect(uint32_t Array, uint32_t ArrayIndex, uint32_t StructSize, uint32_t Offset);
+
+private:
+    ExePublisher Version;
+};
+
+extern SGExe* sExe;
 
 #endif

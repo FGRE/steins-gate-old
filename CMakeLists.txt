@@ -57,6 +57,7 @@ add_executable(steins-gate
     src/phonesd.cpp
     src/sginterpreter.cpp
     src/steinsgate.cpp
+    src/sgexe.cpp
 )
 target_link_libraries(steins-gate
     npengine npa

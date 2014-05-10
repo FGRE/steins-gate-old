@@ -20,7 +20,6 @@
 #include "steinsgate.hpp"
 #include "nsbmagic.hpp"
 #include "nsbcontext.hpp"
-#include "exeaddress.hpp"
 #include <thread>
 
 static const string PhoneModeString[] =
@@ -47,24 +46,9 @@ static const string PhoneModeString[] =
     "PhoneMode_SendMailEdit"
 };
 
-static const string PhoneContactString[] =
-{
-    "PhID_DAR",
-    "PhID_Oven",
-    "PhID_FEI",
-    "PhID_MAY",
-    "PhID_RUK"
-/*
-macrosys2.nsb:    UNK143("PhID_John");
-macrosys2.nsb:    UNK143("PhID_CRS");
-macrosys2.nsb:    UNK143("PhID_SUZ");
-macrosys2.nsb:    UNK143("PhID_SUZ_0");
-*/
-};
-
 extern std::map<std::string, int32_t> NsbConstants;
 
-SGInterpreter::SGInterpreter(ExePublisher Version) : Version(Version), Exe("STEINSGATE.exe")
+SGInterpreter::SGInterpreter(ExePublisher Version)
 {
     switch (Version)
     {
@@ -78,6 +62,8 @@ SGInterpreter::SGInterpreter(ExePublisher Version) : Version(Version), Exe("STEI
             NpaFile::SetLocale("en_US.UTF-16");
             break;
     }
+
+    sExe = new SGExe("STEINSGATE.exe", Version);
 
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
     Builtins[MAGIC_SEND_MAIL_EDIT] = (void(NsbInterpreter::*)())&SGInterpreter::SendMailEdit;
@@ -95,6 +81,7 @@ SGInterpreter::~SGInterpreter()
     pScriptThread->join();
     delete pPhone;
     delete pScriptThread;
+    delete sExe;
 }
 
 void SGInterpreter::Initialize(Game* pSteinsGate)
@@ -163,7 +150,7 @@ void SGInterpreter::PhoneAddressMenuHighlight()
 {
     int32_t Index = GetVariable<int32_t>("$SW_PHONE_ADRMENUCUR");
     pGame->GLCallback(std::bind(&Phone::AddressMenuHighlight, pPhone, Index));
-    SetVariable("$SW_PHONE_ADRCURCNO", new Variable(PhoneContactString[Index]));
+    SetVariable("$SW_PHONE_ADRCURCNO", new Variable(Index));
 }
 
 void SGInterpreter::PhoneToggle()
@@ -222,29 +209,18 @@ void SGInterpreter::SGPhoneMode()
 
 void SGInterpreter::SendMailEdit()
 {
-    int32_t Index = GetVariable<int32_t>("$SW_PHONE_SENDMAILNO") << 6;
-    uint32_t Address = Index + AddressTable[VA_PHONE_MAIL][Version];
-    string Subject = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x34));
-    string Sender = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x38));
-    string Body = Exe.Read<string>(Exe.Read<uint32_t>(Address + 0x3C));
+    int32_t Index = GetVariable<int32_t>("$SW_PHONE_SENDMAILNO");
+    string Subject = sExe->ReadStringIndirect(VA_PHONE_MAIL, Index, 0x40, 0x34);
+    string Sender = sExe->ReadStringIndirect(VA_PHONE_MAIL, Index, 0x40, 0x38);
+    string Body = sExe->ReadStringIndirect(VA_PHONE_MAIL, Index, 0x40, 0x3C);
     pGame->GLCallback(std::bind(&Phone::PhoneSendMailEdit, pPhone, Subject, Sender, Body));
 }
 
-// TODO: nsbconstants
 void SGInterpreter::AllowPhoneCall()
 {
-    uint8_t Mask = 0;
+    uint16_t Mask = 0;
     for (uint8_t i = 0; i < 4; ++i)
-    {
-        string PhID = Pop<string>();
-        for (uint8_t j = 0; j < 5; ++j)
-        {
-            if (PhID == PhoneContactString[j])
-            {
-                Mask |= (1 << j);
-                break;
-            }
-        }
-    }
+        Mask |= (1 << Pop<int32_t>());
+
     pPhone->SetPhoneCallAllowMask(Mask);
 }

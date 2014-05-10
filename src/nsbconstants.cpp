@@ -657,5 +657,19 @@ std::map<std::string, int32_t> NsbConstants =
     {"RM_From_FEI05_02_A", 633},
     {"RM_From_FEI05_02_B", 634},
     {"RM_From_FEI05_02_C", 635},
-    {"RM_Res_FEI05_02_B1", 636}
+    {"RM_Res_FEI05_02_B1", 636},
+
+    {"PhID_MAY", 0},
+    {"PhID_DAR", 1},
+    {"PhID_RUK", 2},
+    {"PhID_Oven", 3},
+    {"PhID_MOE", 4},
+    {"PhID_John", 5},
+    {"PhID_CRS_0", 6},
+    {"PhID_CRS", 7},
+    {"PhID_SUZ", 8},
+    {"PhID_FEI", 9},
+    {"PhID_Master", 10},
+    {"PhID_OKA", 11},
+    {"PhID_SUZ_0", 12}
 };
