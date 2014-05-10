@@ -50,20 +50,25 @@ extern std::map<std::string, int32_t> NsbConstants;
 
 SGInterpreter::SGInterpreter(ExePublisher Version)
 {
+    // How many NULL bytes terminate string in exe
+    uint8_t CharWidth;
+
     switch (Version)
     {
         case EXE_FUWANOVEL:
             Text::WordWrap = true;
         case EXE_NITROPLUS:
             NpaFile::SetLocale("ja_JP.CP932");
+            CharWidth = 1;
             break;
         case EXE_JAST:
             Text::WordWrap = true;
             NpaFile::SetLocale("en_US.UTF-16");
+            CharWidth = 2;
             break;
     }
 
-    sExe = new SGExe("STEINSGATE.exe", Version);
+    sExe = new SGExe("STEINSGATE.exe", Version, CharWidth);
 
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
     Builtins[MAGIC_SEND_MAIL_EDIT] = (void(NsbInterpreter::*)())&SGInterpreter::SendMailEdit;
