@@ -104,6 +104,15 @@ void SGInterpreter::Main()
     WriteHack("nss/sg01_03.nsb", 890, MAGIC_CLEAR_PARAMS);
     WriteHack("nss/sg01_03.nsb", 1057, MAGIC_CLEAR_PARAMS);
     WriteHack("nss/sg01_03.nsb", 1188, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 921, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 1043, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 1027, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 1057, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 1112, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 1184, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 1195, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/sg01_12.nsb", 1265, MAGIC_CLEAR_PARAMS);
+    WriteHack("nss/macrosys2.nsb", 853, MAGIC_RETURN);
 
     Start();
     ExecuteScript("nss/0_boot.nsb");
