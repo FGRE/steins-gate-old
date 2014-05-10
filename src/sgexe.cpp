@@ -37,3 +37,7 @@ string SGExe::ReadStringIndirect(uint32_t Array, uint32_t ArrayIndex, uint32_t S
     return Read<string>(Read<uint32_t>(Address + Offset));
 }
 
+ExePublisher SGExe::GetVersion()
+{
+    return Version;
+}

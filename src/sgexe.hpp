@@ -40,7 +40,9 @@ class SGExe : private ExeFile
 {
 public:
     SGExe(const std::string& Name, ExePublisher Version);
+
     string ReadStringIndirect(uint32_t Array, uint32_t ArrayIndex, uint32_t StructSize, uint32_t Offset);
+    ExePublisher GetVersion();
 
 private:
     ExePublisher Version;
