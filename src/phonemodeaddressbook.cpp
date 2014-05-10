@@ -24,15 +24,6 @@
 
 sf::Texture* LoadTextureFromColor(string Color, int32_t Width, int32_t Height);
 
-const char* ContactString[] =
-{
-    "まゆり",
-    "ダル",
-    "ルカ子",
-    "電話レンジ (仮)",
-    "フェイリス"
-};
-
 PhoneModeAddressBook::PhoneModeAddressBook(Phone* pPhone) :
 PhoneMode(pPhone),
 ContactHighlight(0),
