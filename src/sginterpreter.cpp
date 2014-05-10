@@ -113,6 +113,7 @@ void SGInterpreter::Main()
     WriteHack("nss/sg01_12.nsb", 1195, MAGIC_CLEAR_PARAMS);
     WriteHack("nss/sg01_12.nsb", 1265, MAGIC_CLEAR_PARAMS);
     WriteHack("nss/macrosys2.nsb", 853, MAGIC_RETURN);
+    WriteHack("nss/macrosys2.nsb", 996, MAGIC_RETURN);
 
     Start();
     ExecuteScript("nss/0_boot.nsb");
