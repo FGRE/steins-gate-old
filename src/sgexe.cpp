@@ -22,7 +22,7 @@ SGExe* sExe;
 static const uint32_t AddressTable[][3] =
 {
     { 0x643d68, 0x63d338, 0x643d68 },
-    { 0, 0x61b2f0, 0}
+    { 0x64dd18, 0x61b2f0, 0x64dd18 }
 };
 
 SGExe::SGExe(const std::string& Name, ExePublisher Version) :
