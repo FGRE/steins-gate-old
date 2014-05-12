@@ -64,7 +64,8 @@ State(PHONE_CLOSED),
 ShowSD(false),
 ShowOverlay(false),
 Mode(MODE_POWER_OFF),
-pWindow(pWindow)
+pWindow(pWindow),
+pMode(nullptr)
 {
     pWallpaper = LoadTextureFromFile("cg/sys/phone/pwcg101.png", sf::IntRect());
     pPhoneTex = LoadTextureFromFile("cg/sys/phone/phone_01.png", sf::IntRect());
@@ -82,6 +83,9 @@ pWindow(pWindow)
     Wallpaper.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
     ToSprite()->setPosition(PHONE_POS_X, PHONE_POS_Y);
 
+    for (int i = 0; i < MODE_INVALID; ++i)
+        PhoneModes[i] = nullptr;
+
     PhoneModes[MODE_MAIL_MENU] = new PhoneModeMailMenu(this);
     PhoneModes[MODE_DEFAULT_OPERATABLE] = new PhoneModeDefaultOperatable(this);
     PhoneModes[MODE_ADDRESS_BOOK] = new PhoneModeAddressBook(this);
@@ -91,13 +95,12 @@ pWindow(pWindow)
 
 Phone::~Phone()
 {
+    for (int i = 0; i < MODE_INVALID; ++i)
+        delete PhoneModes[i];
+
     delete pPhoneTex;
     delete pPhoneOpenTex;
     delete pWallpaper;
-    delete PhoneModes[MODE_MAIL_MENU];
-    delete PhoneModes[MODE_DEFAULT_OPERATABLE];
-    delete PhoneModes[MODE_ADDRESS_BOOK];
-    delete PhoneModes[MODE_SEND_MAIL_EDIT];
     delete pSD;
 }
 
@@ -137,7 +140,7 @@ void Phone::Draw(sf::RenderWindow* pWindow)
             PhoneModes[MODE_ADDRESS_BOOK]->Draw(pWindow);
         if (Mode == MODE_ADDRESS_CONFIRM_MAIL)
             PhoneModes[MODE_SEND_MAIL_EDIT]->Draw(pWindow);
-        if (Mode == MODE_DEFAULT_OPERATABLE || Mode == MODE_ADDRESS_BOOK || Mode == MODE_MAIL_MENU || Mode == MODE_SEND_MAIL_EDIT)
+        if (pMode)
             pMode->Draw(pWindow);
     }
     if (ShowSD)
@@ -215,16 +218,13 @@ void Phone::UpdateMode(uint8_t NewMode)
     pMode = PhoneModes[NewMode];
     switch (NewMode)
     {
-        case MODE_MAIL_MENU:
-        case MODE_ADDRESS_BOOK:
-        case MODE_SEND_MAIL_EDIT:
-        case MODE_DEFAULT_OPERATABLE:
-            pMode->OnOpen(Mode);
-            break;
         case MODE_DEFAULT:
             Wallpaper.setTexture(*pWallpaper);
             Wallpaper.setTextureRect(sf::IntRect(0, 0, WALLPAPER_WIDTH, WALLPAPER_HEIGHT));
             break;
+        default:
+            if (pMode)
+                pMode->OnOpen(Mode);
     }
     Mode = NewMode;
 }
@@ -263,14 +263,8 @@ void Phone::SetPriority(int32_t Priority)
 
 void Phone::MouseMoved(sf::Vector2i Pos)
 {
-    switch (Mode)
-    {
-        case MODE_MAIL_MENU:
-        case MODE_ADDRESS_BOOK:
-        case MODE_DEFAULT_OPERATABLE:
-            pMode->MouseMoved(Pos);
-            break;
-    }
+    if (pMode)
+        pMode->MouseMoved(Pos);
 }
 
 void Phone::LeftMouseClicked(sf::Vector2i Pos)
@@ -279,7 +273,7 @@ void Phone::LeftMouseClicked(sf::Vector2i Pos)
           Pos.y > PHONE_WALLPAPER_Y && Pos.y < PHONE_WALLPAPER_Y + WALLPAPER_HEIGHT))
         return;
 
-    if (Mode == MODE_DEFAULT_OPERATABLE || Mode == MODE_ADDRESS_BOOK)
+    if (pMode)
         UpdateMode(pMode->LeftMouseClicked());
 }
 
@@ -287,14 +281,12 @@ void Phone::RightMouseClicked(SGInterpreter* pInterpreter)
 {
     switch (Mode)
     {
-        case MODE_MAIL_MENU:
-        case MODE_ADDRESS_BOOK:
-        case MODE_DEFAULT_OPERATABLE:
-            UpdateMode(pMode->RightMouseClicked());
-            break;
         case MODE_DEFAULT:
             pInterpreter->PhoneToggle();
             break;
+        default:
+            if (pMode)
+                UpdateMode(pMode->RightMouseClicked());
     }
 }
 
