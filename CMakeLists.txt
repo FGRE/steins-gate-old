@@ -34,12 +34,14 @@ find_package(GStreamer REQUIRED)
 find_package(GLIB REQUIRED)
 find_package(NPA REQUIRED)
 find_package(NPENGINE REQUIRED)
+find_package(Fontconfig REQUIRED)
 
 # add libraries
 include_directories(
     ${NPA_INCLUDE_DIR}
     ${NPENGINE_INCLUDE_DIR}
     ${GLIB_INCLUDE_DIRS}
+    ${FONTCONFIG_INCLUDE_DIR}
 )
 link_directories(
     ${NPENGINE_LIBRARY_DIR}
@@ -63,6 +65,7 @@ target_link_libraries(steins-gate
     npengine npa
     ${Boost_LIBRARIES}
     ${SFML_LIBRARIES}
+    ${FONTCONFIG_LIBRARIES}
     ${GSTREAMER_LIBRARIES} ${GSTREAMER_APP_LIBRARIES} ${GSTREAMER_VIDEO_LIBRARIES}
 )
 

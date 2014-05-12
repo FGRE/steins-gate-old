@@ -53,21 +53,25 @@ SGInterpreter::SGInterpreter(ExePublisher Version)
     // How many NULL bytes terminate string in exe
     uint8_t CharWidth;
 
+    const char* Language = "ja";
     switch (Version)
     {
         case EXE_FUWANOVEL:
+            Language = "en";
             Text::WordWrap = true;
         case EXE_NITROPLUS:
             NpaFile::SetLocale("ja_JP.CP932");
             CharWidth = 1;
             break;
         case EXE_JAST:
+            Language = "en";
             Text::WordWrap = true;
             NpaFile::SetLocale("en_US.UTF-16");
             CharWidth = 2;
             break;
     }
 
+    Text::LoadFont(Language);
     sExe = new SGExe("STEINSGATE.exe", Version, CharWidth);
 
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
