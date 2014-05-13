@@ -63,7 +63,7 @@ void PhoneModeAddressBook::Draw(sf::RenderWindow* pWindow)
     pWindow->draw(pPhone->BlueHeader);
     pWindow->draw(HeaderText);
     pWindow->draw(Highlight);
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < Contacts.size(); ++i)
         pWindow->draw(Contacts[i]);
 }
 
