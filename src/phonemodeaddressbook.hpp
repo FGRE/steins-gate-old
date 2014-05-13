@@ -38,15 +38,16 @@ protected:
     virtual uint8_t RightMouseClicked();
 
     void SetHighlight(int16_t Highlight);
+    void SetAddressMask(uint16_t AddressMask);
 private:
     int16_t ContactHighlight;
-    uint16_t CallAllowedMask;
+    uint16_t CallAllowedMask, AddressMask;
     sf::Texture* pWhite;
     sf::Texture* pHighlight;
     sf::Sprite Highlight;
     sf::Sprite Mask;
     sf::Text HeaderText;
-    sf::Text Contacts[5];
+    std::vector<sf::Text> Contacts;
 };
 
 #endif

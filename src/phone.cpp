@@ -307,3 +307,9 @@ void Phone::PhoneSendMailEdit(const string& Subject, const string& Sender, const
     PhoneModeSendMailEdit* pMode = (PhoneModeSendMailEdit*)PhoneModes[MODE_SEND_MAIL_EDIT];
     pMode->SetText(Subject, Sender, Body);
 }
+
+void Phone::SetAddressbookMask(uint16_t Mask)
+{
+    PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
+    pMode->SetAddressMask(Mask);
+}

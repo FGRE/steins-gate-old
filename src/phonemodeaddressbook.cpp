@@ -27,24 +27,14 @@ sf::Texture* LoadTextureFromColor(string Color, int32_t Width, int32_t Height);
 PhoneModeAddressBook::PhoneModeAddressBook(Phone* pPhone) :
 PhoneMode(pPhone),
 ContactHighlight(0),
-CallAllowedMask(0)
+CallAllowedMask(0),
+AddressMask(0)
 {
     pWhite = LoadTextureFromColor("white", MASK_WIDTH, MASK_HEIGHT);
     pHighlight = LoadTextureFromColor("#ffc896", 220, 20);
     Highlight.setTexture(*pHighlight);
     Mask.setTexture(*pPhone->pPhoneTex);
     Mask.setPosition(PHONE_WALLPAPER_X, PHONE_WALLPAPER_Y);
-
-    for (int i = 0; i < 5; ++i)
-    {
-        string Name = sExe->ReadStringIndirect(VA_PHONE_ADDRMENU, i, 0xC, 0x4);
-        Contacts[i].setString(sf::String::fromUtf8(Name.begin(), Name.end()));
-        Contacts[i].setFont(Text::Font);
-        Contacts[i].setPosition(PHONE_WALLPAPER_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + i * 20);
-        Contacts[i].setCharacterSize(20);
-        Contacts[i].setColor(sf::Color::Black);
-    }
-
     HeaderText.setFont(Text::Font);
     HeaderText.setPosition(BLUE_HEADER_POS_X + 24, BLUE_HEADER_POS_Y);
     HeaderText.setCharacterSize(20);
@@ -103,4 +93,20 @@ void PhoneModeAddressBook::SetHighlight(int16_t Index)
 
     Highlight.setPosition(BLUE_HEADER_POS_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + Index * 20);
     ContactHighlight = Index;
+}
+
+void PhoneModeAddressBook::SetAddressMask(uint16_t AddressMask)
+{
+    if (this->AddressMask & AddressMask)
+        return;
+
+    string Name = sExe->ReadStringIndirect(VA_PHONE_ADDRMENU, __builtin_ctz(AddressMask), 0xC, 0x4);
+    int i = Contacts.size();
+    Contacts.resize(i + 1);
+    Contacts[i].setString(sf::String::fromUtf8(Name.begin(), Name.end()));
+    Contacts[i].setFont(Text::Font);
+    Contacts[i].setPosition(PHONE_WALLPAPER_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + i * 20);
+    Contacts[i].setCharacterSize(20);
+    Contacts[i].setColor(sf::Color::Black);
+    this->AddressMask |= AddressMask;
 }

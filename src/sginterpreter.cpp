@@ -72,6 +72,7 @@ SGInterpreter::SGInterpreter(ExePublisher Version)
 
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
     Builtins[MAGIC_SEND_MAIL_EDIT] = (void(NsbInterpreter::*)())&SGInterpreter::SendMailEdit;
+    Builtins[MAGIC_UNK101] = (void(NsbInterpreter::*)())&SGInterpreter::UNK101;
 
     SetVariable("#N2Start", new Variable("false"));
     SetVariable("#SYSTEM_cosplay_patch", new Variable("false"));
@@ -236,6 +237,11 @@ void SGInterpreter::AllowPhoneCall()
     uint16_t Mask = 0;
     for (uint8_t i = 0; i < 4; ++i)
         Mask |= (1 << Pop<int32_t>());
-
     pPhone->SetPhoneCallAllowMask(Mask);
+}
+
+// AddressBookSet
+void SGInterpreter::UNK101()
+{
+    pGame->GLCallback(std::bind(&Phone::SetAddressbookMask, pPhone, 1 << Pop<int32_t>()));
 }
