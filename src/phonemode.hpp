@@ -29,7 +29,7 @@ class PhoneMode
     friend class Phone;
 protected:
     PhoneMode(Phone* pPhone) : pPhone(pPhone) { }
-    ~PhoneMode() { }
+    virtual ~PhoneMode() { }
 
     virtual void OnOpen(uint8_t OldMode) = 0;
     virtual void Draw(sf::RenderWindow* pWindow) = 0;
