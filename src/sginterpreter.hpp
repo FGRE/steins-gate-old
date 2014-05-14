@@ -49,6 +49,7 @@ private:
     void SendMailEdit();
     void AllowPhoneCall();
     void UNK101();
+    void UNK143();
 
     void PhoneToggle();
     void PhoneAddressMenuHighlight();

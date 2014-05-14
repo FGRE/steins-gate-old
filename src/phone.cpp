@@ -313,3 +313,9 @@ void Phone::SetAddressbookMask(uint16_t Mask)
     PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
     pMode->SetAddressMask(Mask);
 }
+
+void Phone::ResetAddressbookMask(uint16_t Mask)
+{
+    PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
+    pMode->ResetAddressMask(Mask);
+}

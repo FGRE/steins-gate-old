@@ -123,6 +123,7 @@ public:
     void RightMouseClicked(SGInterpreter* pInterpreter);
     void SetPhoneCallAllowMask(uint16_t Mask);
     void SetAddressbookMask(uint16_t Mask);
+    void ResetAddressbookMask(uint16_t Mask);
     void AddressMenuHighlight(int32_t Index);
     void PhoneSendMailEdit(const string& Subject, const string& Sender, const string& Body);
 

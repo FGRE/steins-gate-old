@@ -63,8 +63,8 @@ void PhoneModeAddressBook::Draw(sf::RenderWindow* pWindow)
     pWindow->draw(pPhone->BlueHeader);
     pWindow->draw(HeaderText);
     pWindow->draw(Highlight);
-    for (int i = 0; i < Contacts.size(); ++i)
-        pWindow->draw(Contacts[i]);
+    for (auto i = Contacts.begin(); i != Contacts.end(); ++i)
+        pWindow->draw(i->Text);
 }
 
 void PhoneModeAddressBook::MouseMoved(sf::Vector2i Pos)
@@ -101,12 +101,26 @@ void PhoneModeAddressBook::SetAddressMask(uint16_t AddressMask)
         return;
 
     string Name = sExe->ReadStringIndirect(VA_PHONE_ADDRMENU, __builtin_ctz(AddressMask), 0xC, 0x4);
-    int i = Contacts.size();
-    Contacts.resize(i + 1);
-    Contacts[i].setString(sf::String::fromUtf8(Name.begin(), Name.end()));
-    Contacts[i].setFont(Text::Font);
-    Contacts[i].setPosition(PHONE_WALLPAPER_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + i * 20);
-    Contacts[i].setCharacterSize(20);
-    Contacts[i].setColor(sf::Color::Black);
+    sf::Text ContactText(sf::String::fromUtf8(Name.begin(), Name.end()), Text::Font, 20);
+    ContactText.setPosition(PHONE_WALLPAPER_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + Contacts.size() * 20);
+    ContactText.setColor(sf::Color::Black);
+    Contacts.push_back({ ContactText, (uint8_t)__builtin_ctz(AddressMask) });
     this->AddressMask |= AddressMask;
+}
+
+void PhoneModeAddressBook::ResetAddressMask(uint16_t AddressMask)
+{
+    if (!(this->AddressMask & AddressMask))
+        return;
+
+    uint8_t Index = (uint8_t)__builtin_ctz(AddressMask);
+    for (auto i = Contacts.begin(); i != Contacts.end(); ++i)
+    {
+        if (i->Index == Index)
+        {
+            Contacts.erase(i);
+            break;
+        }
+    }
+    this->AddressMask &= ~AddressMask;
 }
