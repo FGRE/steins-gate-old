@@ -88,7 +88,7 @@ uint8_t PhoneModeAddressBook::RightMouseClicked()
 
 void PhoneModeAddressBook::SetHighlight(int16_t Index)
 {
-    if (Index < 0 || Index > 4)
+    if (Index < 0 || Index >= Contacts.size())
         return;
 
     Highlight.setPosition(BLUE_HEADER_POS_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + Index * 20);
