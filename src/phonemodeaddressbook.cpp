@@ -95,25 +95,26 @@ void PhoneModeAddressBook::SetHighlight(int16_t Index)
     ContactHighlight = Index;
 }
 
-void PhoneModeAddressBook::SetAddressMask(uint16_t AddressMask)
+void PhoneModeAddressBook::AddContact(uint8_t Index)
 {
+    uint16_t AddressMask = 1 << Index;
     if (this->AddressMask & AddressMask)
         return;
 
-    string Name = sExe->ReadStringIndirect(VA_PHONE_ADDRMENU, __builtin_ctz(AddressMask), 0xC, 0x4);
+    string Name = sExe->ReadStringIndirect(VA_PHONE_ADDRMENU, Index, 0xC, 0x4);
     sf::Text ContactText(sf::String::fromUtf8(Name.begin(), Name.end()), Text::Font, 20);
     ContactText.setPosition(PHONE_WALLPAPER_X, BLUE_HEADER_POS_Y + BLUE_HEADER_HEIGHT + Contacts.size() * 20);
     ContactText.setColor(sf::Color::Black);
-    Contacts.push_back({ ContactText, (uint8_t)__builtin_ctz(AddressMask) });
+    Contacts.push_back({ ContactText, Index });
     this->AddressMask |= AddressMask;
 }
 
-void PhoneModeAddressBook::ResetAddressMask(uint16_t AddressMask)
+void PhoneModeAddressBook::DelContact(uint8_t Index)
 {
+    uint16_t AddressMask = 1 << Index;
     if (!(this->AddressMask & AddressMask))
         return;
 
-    uint8_t Index = (uint8_t)__builtin_ctz(AddressMask);
     for (auto i = Contacts.begin(); i != Contacts.end(); ++i)
     {
         if (i->Index == Index)

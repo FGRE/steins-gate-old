@@ -45,8 +45,8 @@ protected:
     virtual uint8_t RightMouseClicked();
 
     void SetHighlight(int16_t Highlight);
-    void SetAddressMask(uint16_t AddressMask);
-    void ResetAddressMask(uint16_t AddressMask);
+    void AddContact(uint8_t Index);
+    void DelContact(uint8_t Index);
 private:
     int16_t ContactHighlight;
     uint16_t CallAllowedMask, AddressMask;

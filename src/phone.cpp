@@ -308,14 +308,14 @@ void Phone::PhoneSendMailEdit(const string& Subject, const string& Sender, const
     pMode->SetText(Subject, Sender, Body);
 }
 
-void Phone::SetAddressbookMask(uint16_t Mask)
+void Phone::AddressbookSet(uint8_t Index)
 {
     PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
-    pMode->SetAddressMask(Mask);
+    pMode->AddContact(Index);
 }
 
-void Phone::ResetAddressbookMask(uint16_t Mask)
+void Phone::AddressbookReset(uint8_t Index)
 {
     PhoneModeAddressBook* pMode = (PhoneModeAddressBook*)PhoneModes[MODE_ADDRESS_BOOK];
-    pMode->ResetAddressMask(Mask);
+    pMode->DelContact(Index);
 }

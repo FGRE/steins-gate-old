@@ -244,11 +244,11 @@ void SGInterpreter::AllowPhoneCall()
 // AddressBookSet
 void SGInterpreter::UNK101()
 {
-    pGame->GLCallback(std::bind(&Phone::SetAddressbookMask, pPhone, 1 << Pop<int32_t>()));
+    pGame->GLCallback(std::bind(&Phone::AddressbookSet, pPhone, Pop<int32_t>()));
 }
 
 // AddressBookReset
 void SGInterpreter::UNK143()
 {
-    pGame->GLCallback(std::bind(&Phone::ResetAddressbookMask, pPhone, 1 << Pop<int32_t>()));
+    pGame->GLCallback(std::bind(&Phone::AddressbookReset, pPhone, Pop<int32_t>()));
 }
