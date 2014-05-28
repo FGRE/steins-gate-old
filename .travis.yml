@@ -40,7 +40,7 @@ install:
     libsndfile1-dev libopenal-dev libudev-dev
     libgstreamer-plugins-base1.0-dev
     libglib2.0-dev
-    libboost-locale1.55-dev libboost-system1.55-dev
+    libboost-locale1.55-dev libboost-system1.55-dev libboost-filesystem1.55-dev
     lftp
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
   - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.8-dev; fi
