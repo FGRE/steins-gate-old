@@ -81,6 +81,7 @@ SGInterpreter::SGInterpreter(ExePublisher Version)
     SetVariable("$GameStart", new Variable(0));
     SetVariable("$silhouette", new Variable("false"));
     SetVariable("$OnDialog", new Variable("false"));
+    SetVariable("#SYSTEM_save_path", new Variable("."));
 }
 
 SGInterpreter::~SGInterpreter()
