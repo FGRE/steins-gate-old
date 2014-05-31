@@ -17,6 +17,7 @@
  * */
 #include "phonemodedefaultoperatable.hpp"
 #include "phone.hpp"
+#include "sgexe.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <unistd.h>
@@ -133,8 +134,21 @@ uint8_t PhoneModeDefaultOperatable::LeftMouseClicked()
             case BUTTON_MAIL:
                 return MODE_MAIL_MENU;
             case BUTTON_WEB:
+                const char* Website;
+                switch (sExe->GetVersion())
+                {
+                    case EXE_NITROPLUS:
+                        Website = "http://futuregadget-lab.com/";
+                        break;
+                    // Fuwanovel executable opens japanese (.com) website
+                    // But it makes more sense to open english version instead
+                    case EXE_FUWANOVEL:
+                    case EXE_JAST:
+                        Website = "http://futuregadget-lab.us/";
+                        break;
+                }
                 if (fork() == 0)
-                    execlp("/usr/bin/xdg-open", "/usr/bin/xdg-open", "http://futuregadget-lab.com/", NULL);
+                    execlp("/usr/bin/xdg-open", "/usr/bin/xdg-open", Website, NULL);
                 break;
             case BUTTON_SETTINGS:
                 break;

@@ -51,8 +51,8 @@ int main(int argc, char** argv)
     SteinsGate* pGame = new SteinsGate(pInterpreter);
     pGame->GLCallback(std::bind(&SGInterpreter::Initialize, pInterpreter, pGame));
     pGame->Run();
+
     delete pGame;
     delete pInterpreter;
     delete sResourceMgr;
-    return 0;
 }

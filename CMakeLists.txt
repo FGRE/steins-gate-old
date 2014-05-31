@@ -28,7 +28,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
 configure_file(${PROJECT_SOURCE_DIR}/src/version.hpp.in
     ${PROJECT_SOURCE_DIR}/src/version.hpp)
 
-find_package(Boost REQUIRED COMPONENTS system filesystem)
+find_package(Boost REQUIRED COMPONENTS system)
 find_package(SFML 2 REQUIRED COMPONENTS system window graphics)
 find_package(GStreamer REQUIRED)
 find_package(GLIB REQUIRED)
