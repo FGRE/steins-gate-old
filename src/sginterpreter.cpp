@@ -127,7 +127,7 @@ void SGInterpreter::Main()
     ExecuteScript("nss/0_boot.nsb");
 }
 
-void SGInterpreter::SetParam()
+void SGInterpreter::Literal()
 {
     // Check for constant/macro
     if (pContext->GetLineArgs()[0] == "STRING")
@@ -142,7 +142,7 @@ void SGInterpreter::SetParam()
     }
 
     // Not a constant/macro
-    NsbInterpreter::SetParam();
+    NsbInterpreter::Literal();
 }
 
 void SGInterpreter::OnVariableChanged(const string& Identifier)

@@ -44,7 +44,7 @@ public:
 private:
     void WriteHack(const char* ScriptName, uint32_t LineNumber, uint16_t NewMagic);
 
-    virtual void SetParam();
+    virtual void Literal();
 
     void SendMailEdit();
     void AllowPhoneCall();
