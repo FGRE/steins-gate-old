@@ -17,7 +17,6 @@
  * */
 #include "steinsgate.hpp"
 #include "sginterpreter.hpp"
-#include "resourcemgr.hpp"
 
 int PrintArguments(char** argv)
 {

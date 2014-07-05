@@ -20,6 +20,7 @@
 #include "steinsgate.hpp"
 #include "nsbmagic.hpp"
 #include "nsbcontext.hpp"
+#include "isgfile.hpp"
 #include <thread>
 
 static const string PhoneModeString[] =
@@ -68,6 +69,7 @@ SGInterpreter::SGInterpreter(ExePublisher Version)
             break;
     }
 
+    sResourceMgr = CreateResourceMgr<ISGFile>({"cg.npa", "nss.npa", "voice.npa", "sound.npa"});
     sExe = new SGExe("STEINSGATE.exe", Version, CharWidth);
 
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
