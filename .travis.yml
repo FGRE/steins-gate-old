@@ -5,8 +5,8 @@ compiler:
   - clang
 
 env:
-  # this is our secret upload key $SECRET_TOKEN:
-  secure: "XtapC9jbqC/A+G6RoQf8kUxGt//h8xJqXfXTV4LbaOmNp3KZ3UHyFcw1niUaLmIdVrGltbqt9LJ82XRfxu34G3KP8b4cBMoUMHmDYpKM78UA1ChC36ZLhbXl/vTiHwTxpgAMv+nbpFv1Dxz/MRqB8DjuYdyBTS86zbwQ109A3C8="
+  # this is our secret upload key $UPLOAD_TOKEN:
+  secure: "OYrIYUcBg/vd/yW1tzSOEAyXQXWYeUrYpg0VQQH/jndiG3Vdd6tQLy5ejhnlKVziJgFsYzxG/klQEbxdKFtEW5rsg3tbK8whbXE0IkFgtWa6kf1j3IBd7xhw6H2cfk9XsBKeN3pGKYQfaFgpyYUMCCsKnzf436+YBg1HklhZ1KQ="
 
 branches:
   only:
@@ -41,17 +41,17 @@ install:
     libgstreamer-plugins-base1.0-dev
     libglib2.0-dev
     libboost-locale1.55-dev libboost-system1.55-dev libboost-filesystem1.55-dev
-    lftp
+    curl
   - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
   - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.8-dev; fi
 
 before_script:
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8"; fi
-  - curl http://dev.pulsir.eu/krofna/downloads/3rdparty/sfml-2.1.0.4a300547f3-1-x86_64.tar.bz2 | sudo tar jx --strip-components=1 -C /
+  - curl http://f4ke.de/dev/fgre/downloads/sfml-travis.tar.bz2 | sudo tar jx --strip-components=1 -C /
   - cd .. && mkdir libnpa && cd libnpa
-  - curl http://dev.pulsir.eu/krofna/downloads/latest.php?p=libnpa | tar jx --strip-components=1
+  - curl http://f4ke.de/dev/fgre/downloads/libnpa-travis.tar.bz2 | tar jx --strip-components=1
   - cd .. && mkdir libnpengine && cd libnpengine
-  - curl http://dev.pulsir.eu/krofna/downloads/latest.php?p=libnpengine | tar jx --strip-components=1
+  - curl http://f4ke.de/dev/fgre/downloads/libnpengine-travis.tar.bz2 | tar jx --strip-components=1
   - cd $TRAVIS_BUILD_DIR
 
 script:
