@@ -20,7 +20,7 @@
 #include "steinsgate.hpp"
 #include "nsbmagic.hpp"
 #include "nsbcontext.hpp"
-#include "isgfile.hpp"
+#include "sgresourcemgr.hpp"
 #include <thread>
 
 static const string PhoneModeString[] =
@@ -49,15 +49,6 @@ static const string PhoneModeString[] =
 
 extern std::map<std::string, int32_t> NsbConstants;
 
-ResourceMgr* CreateResourceMgr(const std::vector<std::string>& AchieveFileNames)
-{
-    std::vector<INpaFile*> Archives;
-    Archives.resize(AchieveFileNames.size());
-    for (uint32_t i = 0; i < AchieveFileNames.size(); ++i)
-        Archives[i] = new ISGFile(AchieveFileNames[i]);
-    return new ResourceMgr(Archives);
-}
-
 SGInterpreter::SGInterpreter(ExePublisher Version)
 {
     // How many NULL bytes terminate string in exe
@@ -78,7 +69,7 @@ SGInterpreter::SGInterpreter(ExePublisher Version)
             break;
     }
 
-    sResourceMgr = CreateResourceMgr({"cg.npa", "nss.npa", "voice.npa", "sound.npa"});
+    sResourceMgr = new SGResourceMgr;
     sExe = new SGExe("STEINSGATE.exe", Version, CharWidth);
 
     Builtins[MAGIC_ALLOW_PHONE_CALL] = (void(NsbInterpreter::*)())&SGInterpreter::AllowPhoneCall;
