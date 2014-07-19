@@ -97,6 +97,13 @@ SGInterpreter::~SGInterpreter()
 void SGInterpreter::Initialize(Game* pSteinsGate)
 {
     NsbInterpreter::Initialize(pSteinsGate);
+
+    LoadScript("nss/macrosys2.nsb");
+    LoadScript("nss/function_steinsgate.nsb");
+    LoadScript("nss/extra_achievements.nsb");
+    LoadScript("nss/sys_title.nsb");
+    LoadScript("nss/sys_save_function.nsb");
+
     pPhone = new Phone(new sf::Sprite(), pSteinsGate);
     pScriptThread = new std::thread(std::bind(&SGInterpreter::Main, this));
 }

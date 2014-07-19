@@ -30,7 +30,7 @@ static const char* ArchieveFileNames[] =
 
 SGResourceMgr::SGResourceMgr()
 {
-    Archives.resize(sizeof(ArchieveFileNames) / sizeof(const char*));
+    Archives.resize(sizeof(ArchieveFileNames) / sizeof(const char*) - 1);
     for (uint32_t i = 0; ArchieveFileNames[i]; ++i)
         Archives[i] = new ISGFile(ArchieveFileNames[i]);
     assert(!Archives.empty());
