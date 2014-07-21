@@ -98,6 +98,10 @@ void SGInterpreter::Initialize(Game* pSteinsGate)
 {
     NsbInterpreter::Initialize(pSteinsGate);
 
+    // TODO: include.nss/herpderp.nss from .map files instead
+    LoadScript("nss/function.nsb");
+    LoadScript("nss/function_select.nsb");
+    LoadScript("nss/function_stand.nsb");
     LoadScript("nss/macrosys2.nsb");
     LoadScript("nss/function_steinsgate.nsb");
     LoadScript("nss/extra_achievements.nsb");
