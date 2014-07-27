@@ -34,8 +34,13 @@ protected:
     virtual void MouseMoved(sf::Vector2i Pos);
 
 private:
-    sf::Sprite HDots[2];
+    void UpdateAnim();
+
+    sf::Sprite HDots[4];
     sf::Sprite VDots[2];
+    sf::Text RecMailText;
+    sf::Clock AnimClock;
+    uint8_t AnimStep;
 };
 
 #endif
