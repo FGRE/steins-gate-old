@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 #include "phonemodemailmenu.hpp"
-#include "phone.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <cstring>
@@ -79,11 +78,6 @@ void PhoneModeMailMenu::MouseMoved(sf::Vector2i Pos)
             MailMenuHighlight = i;
         }
     }
-}
-
-uint8_t PhoneModeMailMenu::LeftMouseClicked()
-{
-    return MODE_INVALID;
 }
 
 uint8_t PhoneModeMailMenu::RightMouseClicked()

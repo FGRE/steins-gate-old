@@ -19,7 +19,6 @@
 #define PHONE_MODE_DEFAULT_OPERATABLE_HPP
 
 #include "phonemode.hpp"
-#include <SFML/Graphics/Sprite.hpp>
 
 class Phone;
 

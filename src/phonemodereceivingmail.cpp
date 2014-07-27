@@ -15,25 +15,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
-#ifndef PHONE_MODE_HPP
-#define PHONE_MODE_HPP
+#include "phonemodereceivingmail.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
 
-#include "phone.hpp"
-
-class PhoneMode
+PhoneModeReceivingMail::PhoneModeReceivingMail(Phone* pPhone) : PhoneMode(pPhone)
 {
-    friend class Phone;
-protected:
-    PhoneMode(Phone* pPhone) : pPhone(pPhone) { }
-    virtual ~PhoneMode() { }
+}
 
-    virtual void OnOpen(uint8_t OldMode) = 0;
-    virtual void Draw(sf::RenderWindow* pWindow) = 0;
-    virtual void MouseMoved(sf::Vector2i Pos) = 0;
-    virtual uint8_t LeftMouseClicked() { return MODE_INVALID; }
-    virtual uint8_t RightMouseClicked() { return MODE_INVALID; }
+PhoneModeReceivingMail::~PhoneModeReceivingMail()
+{
+}
 
-    Phone* pPhone; // TODO: static?
-};
+void PhoneModeReceivingMail::OnOpen(uint8_t OldMode)
+{
+}
 
-#endif
+void PhoneModeReceivingMail::Draw(sf::RenderWindow* pWindow)
+{
+    for (int i = 0; i < 2; ++i)
+    {
+        pWindow->draw(HDots[i]);
+        pWindow->draw(VDots[i]);
+    }
+}
+
+void PhoneModeReceivingMail::MouseMoved(sf::Vector2i Pos)
+{
+}

@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 #include "phonemodedefaultoperatable.hpp"
-#include "phone.hpp"
 #include "sgexe.hpp"
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

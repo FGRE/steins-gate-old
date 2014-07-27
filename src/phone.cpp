@@ -22,6 +22,7 @@
 #include "phonemodedefaultoperatable.hpp"
 #include "phonemodeaddressbook.hpp"
 #include "phonemodemailmenu.hpp"
+#include "phonemodereceivingmail.hpp"
 #include "phonesd.hpp"
 #include <SFML/Graphics/Texture.hpp>
 
@@ -90,6 +91,7 @@ pMode(nullptr)
     PhoneModes[MODE_DEFAULT_OPERATABLE] = new PhoneModeDefaultOperatable(this);
     PhoneModes[MODE_ADDRESS_BOOK] = new PhoneModeAddressBook(this);
     PhoneModes[MODE_SEND_MAIL_EDIT] = new PhoneModeSendMailEdit(this);
+    PhoneModes[MODE_RECEIVING_MAIL] = new PhoneModeReceivingMail(this);
     pSD = new PhoneSD();
 }
 
@@ -129,7 +131,7 @@ void Phone::Draw(sf::RenderWindow* pWindow)
     DrawableBase::Draw(pWindow);
     if (State == PHONE_OPEN)
     {
-        if (Mode != MODE_POWER_OFF)
+        if (Mode != MODE_POWER_OFF && Mode != MODE_RECEIVING_MAIL)
         {
             pWindow->draw(Wallpaper);
             pWindow->draw(Header);

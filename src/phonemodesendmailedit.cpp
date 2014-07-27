@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
 #include "phonemodesendmailedit.hpp"
-#include "phone.hpp"
 #include "sgexe.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -59,16 +58,6 @@ void PhoneModeSendMailEdit::Draw(sf::RenderWindow* pWindow)
 
 void PhoneModeSendMailEdit::MouseMoved(sf::Vector2i Pos)
 {
-}
-
-uint8_t PhoneModeSendMailEdit::LeftMouseClicked()
-{
-    return MODE_INVALID;
-}
-
-uint8_t PhoneModeSendMailEdit::RightMouseClicked()
-{
-    return MODE_INVALID;
 }
 
 void PhoneModeSendMailEdit::SetText(const string& Subject, const string& Sender, string Body)

@@ -15,25 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
-#ifndef PHONE_MODE_HPP
-#define PHONE_MODE_HPP
+#ifndef PHONE_MODE_RECEIVING_MAIL_HPP
+#define PHONE_MODE_RECEIVING_MAIL_HPP
 
-#include "phone.hpp"
+#include "phonemode.hpp"
 
-class PhoneMode
+class Phone;
+
+class PhoneModeReceivingMail : PhoneMode
 {
     friend class Phone;
 protected:
-    PhoneMode(Phone* pPhone) : pPhone(pPhone) { }
-    virtual ~PhoneMode() { }
+    PhoneModeReceivingMail(Phone* pPhone);
+    ~PhoneModeReceivingMail();
 
-    virtual void OnOpen(uint8_t OldMode) = 0;
-    virtual void Draw(sf::RenderWindow* pWindow) = 0;
-    virtual void MouseMoved(sf::Vector2i Pos) = 0;
-    virtual uint8_t LeftMouseClicked() { return MODE_INVALID; }
-    virtual uint8_t RightMouseClicked() { return MODE_INVALID; }
+    virtual void OnOpen(uint8_t OldMode);
+    virtual void Draw(sf::RenderWindow* pWindow);
+    virtual void MouseMoved(sf::Vector2i Pos);
 
-    Phone* pPhone; // TODO: static?
+private:
+    sf::Sprite HDots[2];
+    sf::Sprite VDots[2];
 };
 
 #endif

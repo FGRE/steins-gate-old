@@ -19,7 +19,6 @@
 #define PHONE_MODE_SEND_MAIL_EDIT_HPP
 
 #include "phonemode.hpp"
-#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 using std::string;
 
@@ -35,8 +34,6 @@ protected:
     virtual void OnOpen(uint8_t OldMode);
     virtual void Draw(sf::RenderWindow* pWindow);
     virtual void MouseMoved(sf::Vector2i Pos);
-    virtual uint8_t LeftMouseClicked();
-    virtual uint8_t RightMouseClicked();
 
     void SetText(const string& Subject, const string& Sender, string Body);
 private:

@@ -19,8 +19,6 @@
 #define PHONE_MODE_ADDRESS_BOOK_HPP
 
 #include "phonemode.hpp"
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Text.hpp>
 #include <list>
 
 class Phone;

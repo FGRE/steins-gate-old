@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * */
+#ifndef PHONE_HPP
+#define PHONE_HPP
+
 #include "text.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <string>
@@ -149,3 +152,5 @@ private:
     PhoneMode* PhoneModes[MODE_INVALID];
     PhoneSD* pSD;
 };
+
+#endif

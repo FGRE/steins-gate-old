@@ -20,7 +20,6 @@
 
 #include "phonemode.hpp"
 #include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 
 class Phone;
 
@@ -33,7 +32,6 @@ protected:
     virtual void OnOpen(uint8_t OldMode);
     virtual void Draw(sf::RenderWindow* pWindow);
     virtual void MouseMoved(sf::Vector2i Pos);
-    virtual uint8_t LeftMouseClicked();
     virtual uint8_t RightMouseClicked();
 
 private:

@@ -54,6 +54,7 @@ add_executable(steins-gate
     src/phonemodedefaultoperatable.cpp
     src/phonemodemailmenu.cpp
     src/phonemodesendmailedit.cpp
+    src/phonemodereceivingmail.cpp
     src/phonesd.cpp
     src/sginterpreter.cpp
     src/steinsgate.cpp
