@@ -36,7 +36,7 @@ PhoneModeReceivingMail::PhoneModeReceivingMail(Phone* pPhone) : PhoneMode(pPhone
     RecMailText.setFont(Text::Font);
     RecMailText.setString(sf::String::fromUtf8(RecMailStr, RecMailStr + strlen(RecMailStr)));
     // TODO: position and size are a guess
-    RecMailText.setPosition(780 + 2 * 8, 150 + 2 * 8);
+    RecMailText.setPosition(780 + 28, 150 + 18);
     RecMailText.setCharacterSize(20);
     UpdateAnim();
 }
@@ -51,7 +51,6 @@ void PhoneModeReceivingMail::OnOpen(uint8_t OldMode)
 
 void PhoneModeReceivingMail::Draw(sf::RenderWindow* pWindow)
 {
-    // TODO: animation time is a guess
     if (AnimClock.getElapsedTime().asMilliseconds() > 100)
         UpdateAnim();
 
@@ -71,7 +70,6 @@ void PhoneModeReceivingMail::UpdateAnim()
 {
     AnimClock.restart();
 
-    // TODO: animation flow is a guess
     for (int i = 0; i < 4; ++i)
         HDots[i].setTextureRect(sf::IntRect(1000, 720 + AnimStep * 10, 48, 8));
     for (int i = 0; i < 2; ++i)

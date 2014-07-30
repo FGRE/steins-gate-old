@@ -133,20 +133,22 @@ public:
 
 private:
     void UpdateAnim();
+    void UpdateOverlayAnim();
 
     bool ShowSD;
-    bool ShowOverlay;
+    bool MailReceived;
     uint8_t Mode;
     uint8_t State;
     int8_t AnimRow;
     int8_t AnimColumn;
-    sf::Clock AnimClock;
+    int8_t OverlayAnimProgress;
+    sf::Clock AnimClock, OverlayClock;
     sf::Texture* pWallpaper;
     sf::Texture* pPhoneOpenTex; // Open/Close animation frames
     sf::Texture* pPhoneTex;
     sf::Sprite Wallpaper;
     sf::Sprite Header;
-    sf::Sprite Overlay;
+    sf::Sprite Overlay, OverlayContent;
     sf::Sprite BlueHeader;
     sf::Window* pWindow; // Needed to move mouse pointer
     PhoneMode* pMode;

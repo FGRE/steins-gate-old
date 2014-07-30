@@ -59,14 +59,21 @@ const char* HeaderString[] =
 const int16_t WALLPAPER_WIDTH = 220;
 const int16_t WALLPAPER_HEIGHT = 244;
 
+static const sf::IntRect OverlayContentTexRect[] =
+{
+    sf::IntRect(717, 9, 49, 29),
+    sf::IntRect(880, 576, 50, 38)
+};
+
 Phone::Phone(sf::Drawable* pDrawable, sf::Window* pWindow) :
 DrawableBase(pDrawable, -1, DRAWABLE_TEXTURE),
 State(PHONE_CLOSED),
 ShowSD(false),
-ShowOverlay(false),
+MailReceived(false),
 Mode(MODE_POWER_OFF),
 pWindow(pWindow),
-pMode(nullptr)
+pMode(nullptr),
+OverlayAnimProgress(0)
 {
     pWallpaper = LoadTextureFromFile("cg/sys/phone/pwcg101.png", sf::IntRect());
     pPhoneTex = LoadTextureFromFile("cg/sys/phone/phone_01.png", sf::IntRect());
@@ -77,6 +84,7 @@ pMode(nullptr)
     Overlay.setTexture(*pPhoneTex);
     Overlay.setPosition(PHONE_OVERLAY_POS_X, PHONE_OVERLAY_POS_Y);
     Overlay.setTextureRect(sf::IntRect(PHONE_NEW_MAIL_TEX_X, PHONE_NEW_MAIL_TEX_Y, PHONE_NEW_MAIL_WIDTH, PHONE_NEW_MAIL_HEIGHT));
+    OverlayContent.setTexture(*pPhoneTex);
     Header.setTexture(*pPhoneTex);
     Header.setPosition(PHONE_HEADER_POS_X, PHONE_HEADER_POS_Y);
     Header.setTextureRect(sf::IntRect(PHONE_HEADER_TEX_X, PHONE_HEADER_TEX_Y, PHONE_HEADER_WIDTH, PHONE_HEADER_HEIGHT));
@@ -127,6 +135,9 @@ void Phone::Draw(sf::RenderWindow* pWindow)
         AnimClock.restart();
     }
 
+    if (OverlayClock.getElapsedTime().asMilliseconds() > 500)
+        UpdateOverlayAnim();
+
     // Draw
     DrawableBase::Draw(pWindow);
     if (State == PHONE_OPEN)
@@ -135,8 +146,11 @@ void Phone::Draw(sf::RenderWindow* pWindow)
         {
             pWindow->draw(Wallpaper);
             pWindow->draw(Header);
-            if (ShowOverlay)
+            if (MailReceived)
+            {
                 pWindow->draw(Overlay);
+                pWindow->draw(OverlayContent);
+            }
         }
         if (Mode == MODE_ADDRESS_CONFIRM_DIAL)
             PhoneModes[MODE_ADDRESS_BOOK]->Draw(pWindow);
@@ -212,6 +226,15 @@ void Phone::UpdateAnim()
     }
 }
 
+void Phone::UpdateOverlayAnim()
+{
+    const sf::IntRect& TexRect = OverlayContentTexRect[OverlayAnimProgress];
+    OverlayContent.setTextureRect(TexRect);
+    OverlayContent.setPosition(834 - TexRect.width / 2, 208 - TexRect.height / 2);
+    OverlayAnimProgress = !OverlayAnimProgress;
+    OverlayClock.restart();
+}
+
 void Phone::UpdateMode(uint8_t NewMode)
 {
     if (NewMode == Mode || NewMode == MODE_INVALID)
@@ -235,8 +258,8 @@ void Phone::MailReceive(int32_t Show)
 {
     switch (Show)
     {
-        case PHONE_CLOSING: ShowOverlay = false; break;
-        case PHONE_OPENING: ShowOverlay = true; break;
+        case PHONE_CLOSING: MailReceived = false; break;
+        case PHONE_OPENING: MailReceived = true; UpdateOverlayAnim(); break;
         default: assert(false); break;
     }
 }
